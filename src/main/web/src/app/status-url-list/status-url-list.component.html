@@ -1,0 +1,16 @@
+<button type="button" (click)="onAddUrlMonitoring()">Add Url for Monitoring</button>
+<table>
+  <tr>
+    <th>Url Site</th>
+    <th>Status</th>
+    <th>Problem</th>
+  </tr>
+  <tr *ngFor="let stateUrl of stateUrls">
+    <td>{{ stateUrl.url }}</td>
+    <td>{{ stateUrl.status }} </td>
+    <td *ngIf="stateUrl.problem !== ''; else alterMessage">{{ stateUrl.problem }}</td>
+    <ng-template #alterMessage><td>No problem</td></ng-template>
+    <button type="button" (click)="onDisableMonitoringUrl(stateUrl.id)">Disable Monitoring</button>
+    <button type="button" (click)="onDeleteUrlMonitoring(stateUrl)">Delete Monitoring</button>
+  </tr>
+</table>

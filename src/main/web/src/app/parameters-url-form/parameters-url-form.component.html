@@ -1,0 +1,63 @@
+<h3>Enter all data about url for monitoring</h3>
+<form (ngSubmit)="onSubmit()">
+  <label for="url">Url:</label>
+  <input id="url" type="text" [(ngModel)]="parametersMonitoringUrl.url" name="url"><br>
+  <label for="beginTimeMonitoring">Begin Time Monitoring:</label>
+  <input
+    id="beginTimeMonitoring"
+    type="datetime-local"
+    [ngModel]="parametersMonitoringUrl.beginTimeMonitoring | date:'yyyy-MM-ddTHH:mm'"
+    (ngModelChange)="parametersMonitoringUrl.beginTimeMonitoring = $event"
+    name="beginTimeMonitoring"><br>
+  <label for="endTimeMonitoring">End Time Monitoring:</label>
+  <input
+    id="endTimeMonitoring"
+    type="datetime-local"
+    [ngModel]="parametersMonitoringUrl.endTimeMonitoring | date:'yyyy-MM-ddTHH:mm'"
+    (ngModelChange)="parametersMonitoringUrl.endTimeMonitoring = $event"
+    name="endTimeMonitoring"><br>
+  <label for="timeResponseOk">Time Response for OK:</label>
+  <input
+    id="timeResponseOk"
+    type="number"
+    [(ngModel)]="parametersMonitoringUrl.timeResponseOk"
+    name="timeResponseOk"><br>
+  <label for="timeResponseWarning">Time Response for WARNING:</label>
+  <input
+    id="timeResponseWarning"
+    type="number"
+    [(ngModel)]="parametersMonitoringUrl.timeResponseWarning"
+    name="timeResponseWarning"><br>
+  <label for="timeResponseCritical">Time Response for CRITICAL:</label>
+  <input
+    id="timeResponseCritical"
+    type="number"
+    [(ngModel)]="parametersMonitoringUrl.timeResponseCritical"
+    name="timeResponseCritical"><br>
+  <label for="expectedCodeResponse">Expected Code Response:</label>
+  <input
+    id="expectedCodeResponse"
+    type="number"
+    [(ngModel)]="parametersMonitoringUrl.expectedCodeResponse"
+    name="expectedCodeResponse"><br>
+  <label for="minSizeResponse">Min Size of Response:</label>
+  <input
+    id="minSizeResponse"
+    type="number"
+    [(ngModel)]="parametersMonitoringUrl.minSizeResponse"
+    name="minSizeResponse"><br>
+  <label for="maxSizeResponse">Max Size of Response:</label>
+  <input
+    id="maxSizeResponse"
+    type="number"
+    [(ngModel)]="parametersMonitoringUrl.maxSizeResponse"
+    name="maxSizeResponse"><br>
+  <label for="substringResponse">Substring of Response:</label>
+  <input
+    id="substringResponse"
+    type="text"
+    [(ngModel)]="parametersMonitoringUrl.substringResponse"
+    name="substringResponse"><br>
+  <button type="button" (click)="onReturnToList()">Back To List</button>
+  <button type="submit">Submit Data</button>
+</form>
