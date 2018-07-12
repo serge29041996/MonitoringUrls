@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Data
@@ -22,13 +22,13 @@ public class ParametersMonitoringUrl {
   @Size(max = 500, message = "Url cannot have length greater than 500 symbols")
   private String url;
 
-  @FutureOrPresent(message = "The begin date of monitoring should be in the past or present time")
   @Column(name = "begintimemonitoring")
-  private LocalDateTime beginTimeMonitoring;
+  @Temporal(TemporalType.TIME)
+  private Date beginTimeMonitoring;
 
-  @Future(message = "The end time of monitoring should be in future time")
   @Column(name = "endtimemonitoring")
-  private LocalDateTime endTimeMonitoring;
+  @Temporal(TemporalType.TIME)
+  private Date endTimeMonitoring;
 
   @Positive(message = "Time for the response to ok should be greater that null")
   @Column(name = "timeresponseok")
@@ -59,7 +59,7 @@ public class ParametersMonitoringUrl {
   @Column(name = "substringresponse")
   private String substringResponse;
 
-  public ParametersMonitoringUrl(String url, LocalDateTime beginTimeMonitoring, LocalDateTime endTimeMonitoring,
+  public ParametersMonitoringUrl(String url, Date beginTimeMonitoring, Date endTimeMonitoring,
                                  long timeResponseOk, long timeResponseWarning, long timeResponseCritical,
                                  int expectedCodeResponse, int minSizeResponse, int maxSizeResponse) {
     this.url = url;
@@ -73,7 +73,7 @@ public class ParametersMonitoringUrl {
     this.maxSizeResponse = maxSizeResponse;
   }
 
-  public ParametersMonitoringUrl(String url, LocalDateTime beginTimeMonitoring, LocalDateTime endTimeMonitoring,
+  public ParametersMonitoringUrl(String url, Date beginTimeMonitoring, Date endTimeMonitoring,
                                  long timeResponseOk, long timeResponseWarning, long timeResponseCritical,
                                  int expectedCodeResponse, int minSizeResponse, int maxSizeResponse,
                                  String substringResponse) {
