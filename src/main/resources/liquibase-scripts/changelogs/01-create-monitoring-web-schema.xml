@@ -1,0 +1,31 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="01" author="serge29041996" context="start,test">
+        <createTable tableName="ParametersMonitoringUrl"
+                     remarks="A table to contain parameters for monitoring urls">
+            <column name="id" type="bigint">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="url" type="varchar(500)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="beginTimeMonitoring" type="time">
+                <constraints nullable="false"/>
+            </column>
+            <column name="endTimeMonitoring" type="time">
+                <constraints nullable="false"/>
+            </column>
+            <column name="timeResponseOk" type="bigint"/>
+            <column name="timeResponseWarning" type="bigint"/>
+            <column name="timeResponseCritical" type="bigint"/>
+            <column name="expectedCodeResponse" type="int"/>
+            <column name="minSizeResponse" type="int"/>
+            <column name="maxSizeResponse" type="int"/>
+            <column name="substringResponse" type="varchar(100)"/>
+        </createTable>
+        <addAutoIncrement tableName="ParametersMonitoringUrl" columnDataType="bigint" columnName="id" startWith="100" incrementBy="1"/>
+    </changeSet>
+</databaseChangeLog>

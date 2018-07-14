@@ -1,0 +1,21 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="02" author="serge29041996" context="test">
+        <loadData tableName="ParametersMonitoringUrl" file="liquibase-scripts/test-data.csv">
+            <column header="id" name="id" type="numeric"/>
+            <column header="url" name="url" type="string"/>
+            <column header="beginTimeMonitoring" name="beginTimeMonitoring" type="time"/>
+            <column header="endTimeMonitoring" name="endTimeMonitoring" type="time"/>
+            <column header="timeResponseOk" name="timeResponseOk" type="numeric"/>
+            <column header="timeResponseWarning" name="timeResponseWarning" type="numeric"/>
+            <column header="timeResponseCritical" name="timeResponseCritical" type="numeric"/>
+            <column header="expectedCodeResponse" name="expectedCodeResponse" type="numeric"/>
+            <column header="minSizeResponse" name="minSizeResponse" type="numeric"/>
+            <column header="maxSizeResponse" name="maxSizeResponse" type="numeric"/>
+            <column header="substringResponse" name="substringResponse" type="string"/>
+        </loadData>
+    </changeSet>
+</databaseChangeLog>
