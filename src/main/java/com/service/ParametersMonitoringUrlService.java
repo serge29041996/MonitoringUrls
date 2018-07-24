@@ -4,17 +4,15 @@ import com.common.ParametersMonitoringUrl;
 import com.common.exceptions.*;
 import com.dao.ParametersMonitoringUrlRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
+@Service
 public class ParametersMonitoringUrlService implements IParametersMonitoringUrlService {
 
-  private final ParametersMonitoringUrlRepository parametersUrlRepository;
-
   @Autowired
-  public ParametersMonitoringUrlService(ParametersMonitoringUrlRepository parametersMonitoringUrlRepository) {
-    this.parametersUrlRepository = parametersMonitoringUrlRepository;
-  }
+  private ParametersMonitoringUrlRepository parametersUrlRepository;
 
   @Override
   public ParametersMonitoringUrl getParametersByUrl(String url) throws NotFoundParametersUrlException {
@@ -38,8 +36,7 @@ public class ParametersMonitoringUrlService implements IParametersMonitoringUrlS
 
   @Override
   public ParametersMonitoringUrl saveParametersUrl(ParametersMonitoringUrl parameters) throws
-      NullParameterException, ExistingParametersUrlException, CompareTimesException, EqualTimesException {
-    isNullParameter(parameters);
+      ExistingParametersUrlException, CompareTimesException, EqualTimesException {
     isExistSameParametersForUrl(parameters);
     compareTimes(parameters);
     return parametersUrlRepository.save(parameters);
@@ -47,10 +44,9 @@ public class ParametersMonitoringUrlService implements IParametersMonitoringUrlS
 
   @Override
   public void updateParametersUrl(long idUpdatedUrl, ParametersMonitoringUrl newParameters) throws
-      NotFoundParametersUrlException, NullParameterException, EqualParametersException, CompareTimesException,
+      NotFoundParametersUrlException, EqualParametersException, CompareTimesException,
       EqualTimesException {
     ParametersMonitoringUrl oldParameters = getParametersById(idUpdatedUrl);
-    isNullParameter(newParameters);
     isEqualParams(oldParameters, newParameters);
     compareTimes(newParameters);
     newParameters.setId(idUpdatedUrl);
@@ -61,13 +57,6 @@ public class ParametersMonitoringUrlService implements IParametersMonitoringUrlS
   public void deleteParametersMonitoringUrl(long id) throws NotFoundParametersUrlException {
     ParametersMonitoringUrl paramsForDelete = getParametersById(id);
     parametersUrlRepository.delete(paramsForDelete);
-  }
-
-
-  private void isNullParameter(ParametersMonitoringUrl parametersUrl) throws NullParameterException {
-    if (parametersUrl == null) {
-      throw new NullParameterException("No value for parameters");
-    }
   }
 
   private void isExistSameParametersForUrl(ParametersMonitoringUrl parametersMonitoringUrl)

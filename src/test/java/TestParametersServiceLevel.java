@@ -75,11 +75,6 @@ public class TestParametersServiceLevel {
     ParametersMonitoringUrl findByIdParams = parametersMonitoringUrlService.getParametersById(100);
   }
 
-  @Test(expected = NullParameterException.class)
-  public void testSaveNullParams() {
-    parametersMonitoringUrlService.saveParametersUrl(null);
-  }
-
   @Test(expected = ExistingParametersUrlException.class)
   public void testSaveExistingParams() {
     ParametersMonitoringUrl params = initParameters("someUrl",12, 0, 0, 23,
@@ -114,13 +109,6 @@ public class TestParametersServiceLevel {
     ParametersMonitoringUrl params = initParameters("someUrl",12, 0, 0, 23,
         59, 59);
     parametersMonitoringUrlService.updateParametersUrl(100, params);
-  }
-
-  @Test(expected = NullParameterException.class)
-  public void testUpdateWithNullParams() {
-    ParametersMonitoringUrl params = initParameters("someUrl",12, 0, 0, 23,
-        59, 59);
-    parametersMonitoringUrlService.updateParametersUrl(101, null);
   }
 
   @Test(expected = EqualParametersException.class)
