@@ -1,3 +1,6 @@
+package com.service;
+
+import com.common.DataUtils;
 import com.common.ParametersMonitoringUrl;
 import com.common.exceptions.*;
 import com.dao.ParametersMonitoringUrlRepository;
@@ -12,7 +15,6 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Calendar;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @TestPropertySource(
     locations = "classpath:test.properties")
 */
-public class TestParametersServiceLevel {
+public class ParametersMonitoringUrlServiceTest {
   @Mock
   private ParametersMonitoringUrlRepository parametersMonitoringUrlRepository;
 
@@ -156,23 +158,12 @@ public class TestParametersServiceLevel {
 
   private ParametersMonitoringUrl initParameters(String url, int hourBegin, int minuteBegin, int secondBegin,
                                                  int hourEnd, int minuteEnd, int secondEnd) {
-    Date beginTime = getFormattedISOTime(hourBegin, minuteBegin, secondBegin);
-    Date endTime = getFormattedISOTime(hourEnd, minuteEnd, secondEnd);
+    Date beginTime = DataUtils.getFormattedISOTime(hourBegin, minuteBegin, secondBegin);
+    Date endTime = DataUtils.getFormattedISOTime(hourEnd, minuteEnd, secondEnd);
 
     ParametersMonitoringUrl webParams = new ParametersMonitoringUrl(url, beginTime,
         endTime, 1, 2, 3, 200,
         1, 100);
     return webParams;
-  }
-
-  private Date getFormattedISOTime(int hour, int minute, int second) {
-    Calendar calendarBeginTime = Calendar.getInstance();
-
-    calendarBeginTime.clear();
-    calendarBeginTime.set(Calendar.HOUR_OF_DAY, hour);
-    calendarBeginTime.set(Calendar.MINUTE, minute);
-    calendarBeginTime.set(Calendar.SECOND, second);
-
-    return calendarBeginTime.getTime();
   }
 }
