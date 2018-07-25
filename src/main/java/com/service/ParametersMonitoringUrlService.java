@@ -36,19 +36,27 @@ public class ParametersMonitoringUrlService implements IParametersMonitoringUrlS
 
   @Override
   public ParametersMonitoringUrl saveParametersUrl(ParametersMonitoringUrl parameters) throws
-      ExistingParametersUrlException, CompareTimesException, EqualTimesException {
+      ExistingParametersUrlException, CompareTimesException, EqualTimesException, InvalidTimeResponseException,
+      InvalidExpectedCodeResponseException, InvalidSizeResponseException {
     isExistSameParametersForUrl(parameters);
     compareTimes(parameters);
+    compareTimesResponseForDifferentStatus(parameters);
+    checkExpectedCodeResponse(parameters.getExpectedCodeResponse());
+    compareSizeResponse(parameters);
     return parametersUrlRepository.save(parameters);
   }
 
   @Override
   public void updateParametersUrl(long idUpdatedUrl, ParametersMonitoringUrl newParameters) throws
       NotFoundParametersUrlException, EqualParametersException, CompareTimesException,
-      EqualTimesException {
+      EqualTimesException, InvalidTimeResponseException, InvalidExpectedCodeResponseException,
+      InvalidSizeResponseException {
     ParametersMonitoringUrl oldParameters = getParametersById(idUpdatedUrl);
     isEqualParams(oldParameters, newParameters);
     compareTimes(newParameters);
+    compareTimesResponseForDifferentStatus(newParameters);
+    checkExpectedCodeResponse(newParameters.getExpectedCodeResponse());
+    compareSizeResponse(newParameters);
     newParameters.setId(idUpdatedUrl);
     parametersUrlRepository.save(newParameters);
   }
@@ -83,6 +91,53 @@ public class ParametersMonitoringUrlService implements IParametersMonitoringUrlS
       throw new CompareTimesException("Begin time is bigger than end time");
     } else if (endTime.getTime() == beginTime.getTime()) {
       throw new EqualTimesException("Begin and end time are equal");
+    }
+  }
+
+  private void compareTimesResponseForDifferentStatus(ParametersMonitoringUrl parametersUrl) throws InvalidTimeResponseException {
+    long timeResponseOk = parametersUrl.getTimeResponseOk();
+    long timeResponseWarning = parametersUrl.getTimeResponseWarning();
+    long timeResponseCritical = parametersUrl.getTimeResponseCritical();
+    StringBuilder exceptionMessages = new StringBuilder("");
+    boolean isHasException = false;
+
+    if (timeResponseOk == timeResponseWarning || timeResponseWarning == timeResponseCritical ||
+        timeResponseOk == timeResponseCritical) {
+      exceptionMessages.append("Time response should not be equal for different status.");
+    }
+
+    long min = Math.min(Math.min(timeResponseOk, timeResponseWarning), timeResponseCritical);
+    if (min != timeResponseOk) {
+      exceptionMessages.append("Time response for status OK should be the least.");
+    }
+
+    long max = Math.max(Math.max(timeResponseOk, timeResponseWarning), timeResponseCritical);
+    if (max != timeResponseCritical) {
+      exceptionMessages.append("Time response for status Critical should be the largest");
+    }
+
+    if (!exceptionMessages.toString().equals("")) {
+      throw new InvalidTimeResponseException(exceptionMessages.toString());
+    }
+  }
+
+  private void checkExpectedCodeResponse(int expectedCodeResponse) throws InvalidExpectedCodeResponseException {
+    if ((expectedCodeResponse > 103 && expectedCodeResponse < 200) ||
+        (expectedCodeResponse > 209 && expectedCodeResponse < 225) ||
+        (expectedCodeResponse > 226 && expectedCodeResponse < 300) ||
+        (expectedCodeResponse > 308 && expectedCodeResponse < 400) ||
+        (expectedCodeResponse > 418 && expectedCodeResponse < 421) || expectedCodeResponse == 427 ||
+        expectedCodeResponse == 430 || (expectedCodeResponse > 431 && expectedCodeResponse < 451) ||
+        (expectedCodeResponse > 451 && expectedCodeResponse < 500)) {
+      throw new InvalidExpectedCodeResponseException("Invalid expected code of response");
+    }
+  }
+
+  private void compareSizeResponse (ParametersMonitoringUrl parameters) throws InvalidSizeResponseException {
+    if (parameters.getMinSizeResponse() == parameters.getMaxSizeResponse()) {
+      throw new InvalidSizeResponseException("Min and max size of response is equal");
+    } else if (parameters.getMinSizeResponse() > parameters.getMaxSizeResponse()) {
+      throw new InvalidSizeResponseException("Max size of response is bigger than min size");
     }
   }
 

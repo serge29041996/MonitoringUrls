@@ -99,6 +99,68 @@ public class ParametersMonitoringUrlServiceTest {
     parametersMonitoringUrlService.saveParametersUrl(params);
   }
 
+  @Test(expected = InvalidTimeResponseException.class)
+  public void testSaveParamsWithEqualTimeResponseForDifferentStatus() {
+    ParametersMonitoringUrl params = initParameters("newUrl",12,0,0,23,
+        0,0);
+    params.setTimeResponseOk(1);
+    params.setTimeResponseWarning(2);
+    params.setTimeResponseCritical(2);
+
+    parametersMonitoringUrlService.saveParametersUrl(params);
+  }
+
+  @Test(expected = InvalidTimeResponseException.class)
+  public void testSaveParamsWithTheBiggerValueForStatusOk() {
+    ParametersMonitoringUrl params = initParameters("newUrl",12,0,0,23,
+        0,0);
+    params.setTimeResponseOk(3);
+    params.setTimeResponseWarning(2);
+    params.setTimeResponseCritical(4);
+
+    parametersMonitoringUrlService.saveParametersUrl(params);
+  }
+
+  @Test(expected = InvalidTimeResponseException.class)
+  public void testSaveParamsWithTheLeastValueForStatusCritical() {
+    ParametersMonitoringUrl params = initParameters("newUrl",12,0,0,23,
+        0,0);
+    params.setTimeResponseOk(2);
+    params.setTimeResponseWarning(3);
+    params.setTimeResponseCritical(1);
+
+    parametersMonitoringUrlService.saveParametersUrl(params);
+  }
+
+  @Test(expected = InvalidExpectedCodeResponseException.class)
+  public void testSaveParamsWithInvalidExpectedCodeResponse() {
+    ParametersMonitoringUrl params = initParameters("newUrl",12,0,0,23,
+        0,0);
+    params.setExpectedCodeResponse(499);
+
+    parametersMonitoringUrlService.saveParametersUrl(params);
+  }
+
+  @Test(expected = InvalidSizeResponseException.class)
+  public void testSaveParamsWithEqualMinAndMaxSizeResponse() {
+    ParametersMonitoringUrl params = initParameters("newUrl",12,0,0,23,
+        0,0);
+    params.setMinSizeResponse(100);
+    params.setMaxSizeResponse(100);
+
+    parametersMonitoringUrlService.saveParametersUrl(params);
+  }
+
+  @Test(expected = InvalidSizeResponseException.class)
+  public void testSaveParamsWithBiggerMinSizeResponse() {
+    ParametersMonitoringUrl params = initParameters("newUrl",12,0,0,23,
+        0,0);
+    params.setMinSizeResponse(1000);
+    params.setMaxSizeResponse(100);
+
+    parametersMonitoringUrlService.saveParametersUrl(params);
+  }
+
   @Test
   public void testSaveParamsValidParams() {
     ParametersMonitoringUrl params = initParameters("newUrl",12, 0, 0, 23,
@@ -140,7 +202,7 @@ public class ParametersMonitoringUrlServiceTest {
   public void testUpdateParamsValidParams() {
     ParametersMonitoringUrl newParams = initParameters("someUrl",12, 0, 0, 22,
         59, 59);
-    newParams.setMinSizeResponse(100);
+    newParams.setMinSizeResponse(10);
     parametersMonitoringUrlService.updateParametersUrl(101, newParams);
   }
 

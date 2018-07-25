@@ -44,7 +44,7 @@ public class ParametersMonitoringUrl {
 
   @Positive(message = "Expected response should be positive number")
   @Min(value = 100, message = "Min expected code of response should be greater than 100")
-  @Max(value = 526, message = "Max expected code of response should be less than 527")
+  @Max(value = 511, message = "Max expected code of response should be less than 527")
   @Column(name = "expectedcoderesponse")
   private int expectedCodeResponse;
 
