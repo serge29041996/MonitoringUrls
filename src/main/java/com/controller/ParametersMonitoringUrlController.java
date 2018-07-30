@@ -38,7 +38,7 @@ public class ParametersMonitoringUrlController {
         parametersMonitoringUrlService.saveParametersUrl(parametersMonitoringUrl);
 
     HttpHeaders headers = new HttpHeaders();
-    headers.setLocation(ucBuilder.path("building/{id}").buildAndExpand(savedParametersMonitoringUrl.getId()).toUri());
+    headers.setLocation(ucBuilder.path("parameters/{id}").buildAndExpand(savedParametersMonitoringUrl.getId()).toUri());
     return new ResponseEntity<String>(headers, HttpStatus.CREATED);
   }
 
