@@ -7,9 +7,47 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class ParametersMonitoringUrlService implements IParametersMonitoringUrlService {
+  private static Set<Integer> validHttpStatuses;
+
+  static {
+    validHttpStatuses = new HashSet<Integer>();
+    for (int i = 100; i < 104; i++) {
+      validHttpStatuses.add(i);
+    }
+
+    for (int i = 200; i < 209; i++) {
+      validHttpStatuses.add(i);
+    }
+
+    validHttpStatuses.add(226);
+
+    for (int i = 300; i < 309; i++) {
+      validHttpStatuses.add(i);
+    }
+
+    for (int i = 400; i < 419; i++) {
+      validHttpStatuses.add(i);
+    }
+
+    for (int i = 421; i < 425; i++) {
+      validHttpStatuses.add(i);
+    }
+
+    validHttpStatuses.add(426);
+    validHttpStatuses.add(428);
+    validHttpStatuses.add(429);
+    validHttpStatuses.add(431);
+    validHttpStatuses.add(451);
+
+    for (int i = 500; i < 512; i++) {
+      validHttpStatuses.add(i);
+    }
+  }
 
   @Autowired
   private ParametersMonitoringUrlRepository parametersUrlRepository;
@@ -99,11 +137,9 @@ public class ParametersMonitoringUrlService implements IParametersMonitoringUrlS
     long timeResponseWarning = parametersUrl.getTimeResponseWarning();
     long timeResponseCritical = parametersUrl.getTimeResponseCritical();
     StringBuilder exceptionMessages = new StringBuilder("");
-    boolean isHasException = false;
 
-    if (timeResponseOk == timeResponseWarning || timeResponseWarning == timeResponseCritical ||
-        timeResponseOk == timeResponseCritical) {
-      exceptionMessages.append("Time response should not be equal for different status.");
+    if (timeResponseOk == timeResponseWarning || timeResponseOk == timeResponseCritical) {
+      exceptionMessages.append("Time response should not be equal for status ok and other status");
     }
 
     long min = Math.min(Math.min(timeResponseOk, timeResponseWarning), timeResponseCritical);
@@ -122,13 +158,7 @@ public class ParametersMonitoringUrlService implements IParametersMonitoringUrlS
   }
 
   private void checkExpectedCodeResponse(int expectedCodeResponse) throws InvalidExpectedCodeResponseException {
-    if ((expectedCodeResponse > 103 && expectedCodeResponse < 200) ||
-        (expectedCodeResponse > 209 && expectedCodeResponse < 225) ||
-        (expectedCodeResponse > 226 && expectedCodeResponse < 300) ||
-        (expectedCodeResponse > 308 && expectedCodeResponse < 400) ||
-        (expectedCodeResponse > 418 && expectedCodeResponse < 421) || expectedCodeResponse == 427 ||
-        expectedCodeResponse == 430 || (expectedCodeResponse > 431 && expectedCodeResponse < 451) ||
-        (expectedCodeResponse > 451 && expectedCodeResponse < 500)) {
+    if (!validHttpStatuses.contains(expectedCodeResponse)) {
       throw new InvalidExpectedCodeResponseException("Invalid expected code of response");
     }
   }

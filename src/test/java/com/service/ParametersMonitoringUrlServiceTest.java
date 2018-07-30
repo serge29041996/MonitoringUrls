@@ -103,9 +103,9 @@ public class ParametersMonitoringUrlServiceTest {
   public void testSaveParamsWithEqualTimeResponseForDifferentStatus() {
     ParametersMonitoringUrl params = initParameters("newUrl",12,0,0,23,
         0,0);
-    params.setTimeResponseOk(1);
+    params.setTimeResponseOk(2);
     params.setTimeResponseWarning(2);
-    params.setTimeResponseCritical(2);
+    params.setTimeResponseCritical(3);
 
     parametersMonitoringUrlService.saveParametersUrl(params);
   }
