@@ -4,12 +4,14 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {ErrorObservable} from "rxjs/observable/ErrorObservable";
 import {ParametersMonitoringUrl} from "./parameters-monitoring-url.model";
 import {HttpHeaders} from "@angular/common/http";
+import {Injectable} from "@angular/core";
 
+@Injectable()
 export class ParametersUrlService {
   constructor(private http: HttpClient) {}
 
   getParametersMonitoringUrl(id: number) {
-    return this.http.get('//localhost:8080/parametersMonitoringUrl/' + id)
+    return this.http.get('//localhost:8080/parameters/' + id)
       .pipe(
         catchError(this.handleError)
       );
@@ -18,7 +20,7 @@ export class ParametersUrlService {
   saveParametersMonitoringUrl(parametersMonitoringUrl: ParametersMonitoringUrl) {
     const body = JSON.stringify(parametersMonitoringUrl);
     const header = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post('//localhost:8080/parametersMonitoringUrl', body, {headers: header})
+    return this.http.post('//localhost:8080/parameters', body, {headers: header})
       .pipe(
         catchError(this.handleError)
       );
@@ -27,14 +29,14 @@ export class ParametersUrlService {
   updateParametersMonitoringUrl(parametersMonitoringUrl: ParametersMonitoringUrl) {
     const body = JSON.stringify(parametersMonitoringUrl);
     const header = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.put('//localhost:8080/parametersMonitoringUrl', body, {headers: header})
+    return this.http.put('//localhost:8080/parameters/' + parametersMonitoringUrl.id, body, {headers: header})
       .pipe(
         catchError(this.handleError)
       );
   }
 
   deleteParametersMonitoringUrl(parametersMonitoringUrl: ParametersMonitoringUrl) {
-    return this.http.delete('//localhost:8080/parametersMonitoringUrl/' + parametersMonitoringUrl.id);
+    return this.http.delete('//localhost:8080/parameters/' + parametersMonitoringUrl.id);
   }
 
   private handleError(error: HttpErrorResponse) {

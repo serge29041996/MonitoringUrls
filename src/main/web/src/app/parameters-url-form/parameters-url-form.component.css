@@ -1,0 +1,19 @@
+p.message {
+  background: center yellow;
+  text-align: center;
+  border: 1px solid black;
+  display: none;
+  margin: 0;
+}
+
+div.block-message {
+  max-height: 1px;
+}
+
+div.message {
+  z-index: 100;
+}
+
+p.output-message {
+  display: block;
+}

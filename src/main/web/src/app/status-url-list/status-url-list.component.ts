@@ -35,4 +35,7 @@ export class StatusUrlListComponent implements OnInit {
     this.router.navigate(['urls/create'], {relativeTo: this.route});
   }
 
+  onBeginMonitoring() {
+  }
+
 }
