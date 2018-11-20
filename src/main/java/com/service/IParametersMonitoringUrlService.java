@@ -9,8 +9,9 @@ public interface IParametersMonitoringUrlService {
   ParametersMonitoringUrl getParametersById(long id) throws NotFoundParametersUrlException;
 
   ParametersMonitoringUrl saveParametersUrl(ParametersMonitoringUrl parametersUrl) throws
-      ExistingParametersUrlException, CompareTimesException, EqualTimesException, InvalidTimeResponseException,
-      InvalidExpectedCodeResponseException, InvalidSizeResponseException;
+      ExistingParametersUrlException, CompareTimesException, EqualTimesException,
+      InvalidTimeResponseException, InvalidExpectedCodeResponseException,
+      InvalidSizeResponseException;
 
   void updateParametersUrl(long idUpdatedUrl, ParametersMonitoringUrl newParameters) throws
       NotFoundParametersUrlException, EqualParametersException, CompareTimesException,

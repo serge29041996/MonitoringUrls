@@ -12,9 +12,9 @@ import java.util.Set;
 
 @Service
 public class ParametersMonitoringUrlService implements IParametersMonitoringUrlService {
-  private static Set<Integer> validHttpStatuses;
+  private Set<Integer> validHttpStatuses;
 
-  static {
+  {
     validHttpStatuses = new HashSet<Integer>();
     for (int i = 100; i < 104; i++) {
       validHttpStatuses.add(i);
@@ -53,9 +53,10 @@ public class ParametersMonitoringUrlService implements IParametersMonitoringUrlS
   private ParametersMonitoringUrlRepository parametersUrlRepository;
 
   @Override
-  public ParametersMonitoringUrl getParametersByUrl(String url) throws NotFoundParametersUrlException {
+  public ParametersMonitoringUrl getParametersByUrl(String url)
+      throws NotFoundParametersUrlException {
     ParametersMonitoringUrl findByUrlParams = parametersUrlRepository.findByUrl(url);
-    if(findByUrlParams != null) {
+    if (findByUrlParams != null) {
       return findByUrlParams;
     } else {
       throw new NotFoundParametersUrlException("Parameters for url " + url + " was not found");
@@ -65,7 +66,7 @@ public class ParametersMonitoringUrlService implements IParametersMonitoringUrlS
   @Override
   public ParametersMonitoringUrl getParametersById(long id) throws NotFoundParametersUrlException {
     ParametersMonitoringUrl findByIdParams = parametersUrlRepository.findById(id);
-    if(findByIdParams != null) {
+    if (findByIdParams != null) {
       return findByIdParams;
     } else {
       throw new NotFoundParametersUrlException("Parameters was not found");
@@ -74,8 +75,9 @@ public class ParametersMonitoringUrlService implements IParametersMonitoringUrlS
 
   @Override
   public ParametersMonitoringUrl saveParametersUrl(ParametersMonitoringUrl parameters) throws
-      ExistingParametersUrlException, CompareTimesException, EqualTimesException, InvalidTimeResponseException,
-      InvalidExpectedCodeResponseException, InvalidSizeResponseException {
+      ExistingParametersUrlException, CompareTimesException, EqualTimesException,
+      InvalidTimeResponseException, InvalidExpectedCodeResponseException,
+      InvalidSizeResponseException {
     isExistSameParametersForUrl(parameters);
     compareTimes(parameters);
     compareTimesResponseForDifferentStatus(parameters);
@@ -107,8 +109,9 @@ public class ParametersMonitoringUrlService implements IParametersMonitoringUrlS
 
   private void isExistSameParametersForUrl(ParametersMonitoringUrl parametersMonitoringUrl)
       throws ExistingParametersUrlException {
-    ParametersMonitoringUrl foundByUrlParameters = parametersUrlRepository.findByUrl(parametersMonitoringUrl.getUrl());
-    if(foundByUrlParameters != null) {
+    ParametersMonitoringUrl foundByUrlParameters = parametersUrlRepository
+        .findByUrl(parametersMonitoringUrl.getUrl());
+    if (foundByUrlParameters != null) {
       throw new ExistingParametersUrlException(
           "Parameters for url " + parametersMonitoringUrl.getUrl() + " already exist");
     }
@@ -116,12 +119,13 @@ public class ParametersMonitoringUrlService implements IParametersMonitoringUrlS
 
   private void isEqualParams(ParametersMonitoringUrl params1, ParametersMonitoringUrl params2)
       throws EqualParametersException {
-      if (params1.equals(params2)) {
-        throw new EqualParametersException("No changes in value of parameters");
-      }
+    if (params1.equals(params2)) {
+      throw new EqualParametersException("No changes in value of parameters");
+    }
   }
 
-  private void compareTimes(ParametersMonitoringUrl parametersUrl) throws CompareTimesException, EqualTimesException {
+  private void compareTimes(ParametersMonitoringUrl parametersUrl) throws CompareTimesException,
+      EqualTimesException {
     Date beginTime = parametersUrl.getBeginTimeMonitoring();
     Date endTime = parametersUrl.getEndTimeMonitoring();
 
@@ -132,7 +136,8 @@ public class ParametersMonitoringUrlService implements IParametersMonitoringUrlS
     }
   }
 
-  private void compareTimesResponseForDifferentStatus(ParametersMonitoringUrl parametersUrl) throws InvalidTimeResponseException {
+  private void compareTimesResponseForDifferentStatus(ParametersMonitoringUrl parametersUrl)
+      throws InvalidTimeResponseException {
     long timeResponseOk = parametersUrl.getTimeResponseOk();
     long timeResponseWarning = parametersUrl.getTimeResponseWarning();
     long timeResponseCritical = parametersUrl.getTimeResponseCritical();
@@ -157,13 +162,15 @@ public class ParametersMonitoringUrlService implements IParametersMonitoringUrlS
     }
   }
 
-  private void checkExpectedCodeResponse(int expectedCodeResponse) throws InvalidExpectedCodeResponseException {
+  private void checkExpectedCodeResponse(int expectedCodeResponse)
+      throws InvalidExpectedCodeResponseException {
     if (!validHttpStatuses.contains(expectedCodeResponse)) {
       throw new InvalidExpectedCodeResponseException("Invalid expected code of response");
     }
   }
 
-  private void compareSizeResponse (ParametersMonitoringUrl parameters) throws InvalidSizeResponseException {
+  private void compareSizeResponse(ParametersMonitoringUrl parameters)
+      throws InvalidSizeResponseException {
     if (parameters.getMinSizeResponse() == parameters.getMaxSizeResponse()) {
       throw new InvalidSizeResponseException("Min and max size of response is equal");
     } else if (parameters.getMinSizeResponse() > parameters.getMaxSizeResponse()) {

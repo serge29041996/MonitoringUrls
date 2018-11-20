@@ -11,8 +11,8 @@ import java.util.Date;
 @Entity
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = "id")
-@Table(name="parametersmonitoringurl")
+@EqualsAndHashCode(exclude = "id", doNotUseGetters = true)
+@Table(name = "parametersmonitoringurl")
 public class ParametersMonitoringUrl {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,10 +22,12 @@ public class ParametersMonitoringUrl {
   @Size(max = 500, message = "Url cannot have length greater than 500 symbols")
   private String url;
 
+  @NotNull
   @Column(name = "begintimemonitoring")
   @Temporal(TemporalType.TIME)
   private Date beginTimeMonitoring;
 
+  @NotNull
   @Column(name = "endtimemonitoring")
   @Temporal(TemporalType.TIME)
   private Date endTimeMonitoring;
@@ -59,12 +61,25 @@ public class ParametersMonitoringUrl {
   @Column(name = "substringresponse")
   private String substringResponse;
 
+  /**
+   * Constructor for all fields, expect substring of response.
+   * @param url url for monitoring
+   * @param beginTimeMonitoring begin time of monitoring
+   * @param endTimeMonitoring end time of monitoring
+   * @param timeResponseOk time response for status OK
+   * @param timeResponseWarning time response for status Warning
+   * @param timeResponseCritical time response for status Critical
+   * @param expectedCodeResponse expected code of response
+   * @param minSizeResponse min size of response
+   * @param maxSizeResponse max size of response
+   */
   public ParametersMonitoringUrl(String url, Date beginTimeMonitoring, Date endTimeMonitoring,
-                                 long timeResponseOk, long timeResponseWarning, long timeResponseCritical,
-                                 int expectedCodeResponse, int minSizeResponse, int maxSizeResponse) {
+                                 long timeResponseOk, long timeResponseWarning,
+                                 long timeResponseCritical, int expectedCodeResponse,
+                                 int minSizeResponse, int maxSizeResponse) {
     this.url = url;
-    this.beginTimeMonitoring = beginTimeMonitoring;
-    this.endTimeMonitoring = endTimeMonitoring;
+    this.beginTimeMonitoring = new Date(beginTimeMonitoring.getTime());
+    this.endTimeMonitoring = new Date(endTimeMonitoring.getTime());
     this.timeResponseOk = timeResponseOk;
     this.timeResponseWarning = timeResponseWarning;
     this.timeResponseCritical = timeResponseCritical;
@@ -73,12 +88,43 @@ public class ParametersMonitoringUrl {
     this.maxSizeResponse = maxSizeResponse;
   }
 
+  /**
+   * Constructor for all fields.
+   * @param url url for monitoring
+   * @param beginTimeMonitoring begin time of monitoring
+   * @param endTimeMonitoring end time of monitoring
+   * @param timeResponseOk time response for status OK
+   * @param timeResponseWarning time response for status Warning
+   * @param timeResponseCritical time response for status Critical
+   * @param expectedCodeResponse expected code of response
+   * @param minSizeResponse min size of response
+   * @param maxSizeResponse max size of response
+   * @param substringResponse substring, which expect in response
+   */
   public ParametersMonitoringUrl(String url, Date beginTimeMonitoring, Date endTimeMonitoring,
-                                 long timeResponseOk, long timeResponseWarning, long timeResponseCritical,
-                                 int expectedCodeResponse, int minSizeResponse, int maxSizeResponse,
+                                 long timeResponseOk, long timeResponseWarning,
+                                 long timeResponseCritical, int expectedCodeResponse,
+                                 int minSizeResponse, int maxSizeResponse,
                                  String substringResponse) {
-    this(url, beginTimeMonitoring, endTimeMonitoring, timeResponseOk, timeResponseWarning, timeResponseCritical,
+    this(url, beginTimeMonitoring, endTimeMonitoring, timeResponseOk, timeResponseWarning,
+        timeResponseCritical,
         expectedCodeResponse, minSizeResponse, maxSizeResponse);
     this.substringResponse = substringResponse;
+  }
+
+  public Date getBeginTimeMonitoring() {
+    return new Date(this.beginTimeMonitoring.getTime());
+  }
+
+  public void setBeginTimeMonitoring(Date beginTimeMonitoring) {
+    this.beginTimeMonitoring = new Date(beginTimeMonitoring.getTime());
+  }
+
+  public Date getEndTimeMonitoring() {
+    return new Date(this.endTimeMonitoring.getTime());
+  }
+
+  public void setEndTimeMonitoring(Date endTimeMonitoring) {
+    this.endTimeMonitoring = new Date(endTimeMonitoring.getTime());
   }
 }

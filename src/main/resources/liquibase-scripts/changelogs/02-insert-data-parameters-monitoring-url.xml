@@ -4,7 +4,8 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
     <changeSet id="02" author="serge29041996" context="test">
-        <loadData tableName="ParametersMonitoringUrl" file="liquibase-scripts/test-data.csv">
+        <loadData tableName="ParametersMonitoringUrl"
+                  file="liquibase-scripts/test-data-parameters-monitoring-url.csv">
             <column header="id" name="id" type="numeric"/>
             <column header="url" name="url" type="string"/>
             <column header="beginTimeMonitoring" name="beginTimeMonitoring" type="time"/>

@@ -3,7 +3,7 @@ package com.controller;
 import com.MonitoringUrlsSpringClass;
 import com.common.DataUtils;
 import com.common.ParametersMonitoringUrl;
-import com.controller.exceptions.handler.ApiException;
+import com.controller.exceptions.handler.ApiError;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.service.IParametersMonitoringUrlService;
 import org.junit.Before;
@@ -213,10 +213,10 @@ public class ParametersMonitoringUrlControllerTest {
     }
   }
 
-  private ApiException asJavaObjectApiException(final String JSONResponse){
+  private ApiError asJavaObjectApiException(final String JSONResponse){
     try {
       final ObjectMapper mapper = new ObjectMapper();
-      return mapper.readValue(JSONResponse,ApiException.class);
+      return mapper.readValue(JSONResponse,ApiError.class);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }

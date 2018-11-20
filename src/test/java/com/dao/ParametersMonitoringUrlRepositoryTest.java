@@ -31,42 +31,46 @@ public class ParametersMonitoringUrlRepositoryTest {
     Date beginTime = DataUtils.getFormattedISOTime(12, 0, 0);
     Date endTime = DataUtils.getFormattedISOTime(23, 59, 59);
 
-    ParametersMonitoringUrl webParams = new ParametersMonitoringUrl("someUrl", beginTime,
+    ParametersMonitoringUrl parametersMonitoringUrl = new ParametersMonitoringUrl("someUrl", beginTime,
         endTime, 1, 2, 3, 200,
         1, 100);
-    webParams = parametersMonitoringUrlRepository.save(webParams);
+    parametersMonitoringUrl = parametersMonitoringUrlRepository.save(parametersMonitoringUrl);
 
-    ParametersMonitoringUrl findByIdParams = parametersMonitoringUrlRepository.findById(webParams.getId());
+    ParametersMonitoringUrl findByIdParams = parametersMonitoringUrlRepository
+        .findById(parametersMonitoringUrl.getId());
 
-    assertThat(findByIdParams).isEqualTo(webParams);
+    assertThat(findByIdParams).isEqualTo(parametersMonitoringUrl);
   }
 
   @Test
   public void testFindByUrl() {
     Date beginTime = DataUtils.getFormattedISOTime(12, 0, 0);
     Date endTime = DataUtils.getFormattedISOTime(23, 59, 59);
-    ParametersMonitoringUrl webParams = new ParametersMonitoringUrl("test-url", beginTime,
-        endTime, 1, 2, 3, 200,
+    ParametersMonitoringUrl parametersMonitoringUrl = new ParametersMonitoringUrl("test-url",
+        beginTime, endTime, 1, 2, 3,
+        200,
         1, 1000, "test");
-    parametersMonitoringUrlRepository.save(webParams);
+    parametersMonitoringUrlRepository.save(parametersMonitoringUrl);
 
-    ParametersMonitoringUrl findByUrlParams = parametersMonitoringUrlRepository.findByUrl(webParams.getUrl());
+    ParametersMonitoringUrl findByUrlParams = parametersMonitoringUrlRepository
+        .findByUrl(parametersMonitoringUrl.getUrl());
 
-    assertThat(findByUrlParams).isEqualTo(webParams);
+    assertThat(findByUrlParams).isEqualTo(parametersMonitoringUrl);
   }
 
   @Test
   public void testDeleteEntity() {
     Date beginTime = DataUtils.getFormattedISOTime(12, 0, 0);
     Date endTime = DataUtils.getFormattedISOTime(23, 59, 59);
-    ParametersMonitoringUrl webParams = new ParametersMonitoringUrl("test-url", beginTime,
-        endTime, 1, 2, 3, 200,
+    ParametersMonitoringUrl parametersMonitoringUrl = new ParametersMonitoringUrl("test-url",
+        beginTime, endTime, 1, 2, 3, 200,
         1, 1000, "test");
-    webParams = parametersMonitoringUrlRepository.save(webParams);
+    parametersMonitoringUrl = parametersMonitoringUrlRepository.save(parametersMonitoringUrl);
 
-    parametersMonitoringUrlRepository.delete(webParams.getId());
+    parametersMonitoringUrlRepository.delete(parametersMonitoringUrl.getId());
 
-    ParametersMonitoringUrl findByIdParams = parametersMonitoringUrlRepository.findById(webParams.getId());
+    ParametersMonitoringUrl findByIdParams = parametersMonitoringUrlRepository
+        .findById(parametersMonitoringUrl.getId());
 
     assertThat(findByIdParams).isNull();
   }
@@ -75,18 +79,20 @@ public class ParametersMonitoringUrlRepositoryTest {
   public void testUpdateEntity() {
     Date beginTime = DataUtils.getFormattedISOTime(12, 0, 0);
     Date endTime = DataUtils.getFormattedISOTime(23, 59, 59);
-    ParametersMonitoringUrl webParams = new ParametersMonitoringUrl("test-url", beginTime,
-        endTime, 1, 2, 3, 200,
-        1, 1000, "test");
-    webParams = parametersMonitoringUrlRepository.save(webParams);
-    webParams.setMaxSizeResponse(150);
-    parametersMonitoringUrlRepository.save(webParams);
+    ParametersMonitoringUrl parametersMonitoringUrl = new ParametersMonitoringUrl("test-url",
+        beginTime, endTime, 1, 2, 3,
+        200, 1, 1000, "test");
+    parametersMonitoringUrl = parametersMonitoringUrlRepository.save(parametersMonitoringUrl);
+    parametersMonitoringUrl.setMaxSizeResponse(150);
+    parametersMonitoringUrlRepository.save(parametersMonitoringUrl);
 
-    ParametersMonitoringUrl findByIdParams = parametersMonitoringUrlRepository.findById(webParams.getId());
+    ParametersMonitoringUrl findByIdParams = parametersMonitoringUrlRepository
+        .findById(parametersMonitoringUrl.getId());
 
     long countParams = parametersMonitoringUrlRepository.count();
 
-    assertThat(findByIdParams.getMaxSizeResponse()).isEqualTo(webParams.getMaxSizeResponse());
+    assertThat(findByIdParams.getMaxSizeResponse())
+        .isEqualTo(parametersMonitoringUrl.getMaxSizeResponse());
     assertThat(countParams).isEqualTo(1);
   }
 
@@ -94,17 +100,17 @@ public class ParametersMonitoringUrlRepositoryTest {
   public void testCountEntity() {
     Date beginTime = DataUtils.getFormattedISOTime(12, 0, 0);
     Date endTime = DataUtils.getFormattedISOTime(23, 59, 59);
-    ParametersMonitoringUrl webParams = new ParametersMonitoringUrl("test-url", beginTime,
-        endTime, 1, 2, 3, 200,
-        1, 1000, "test");
-    parametersMonitoringUrlRepository.save(webParams);
+    ParametersMonitoringUrl parametersMonitoringUrl = new ParametersMonitoringUrl("test-url",
+        beginTime, endTime, 1, 2, 3,
+        200, 1, 1000, "test");
+    parametersMonitoringUrlRepository.save(parametersMonitoringUrl);
 
     beginTime = DataUtils.getFormattedISOTime(10, 0, 0);
     endTime = DataUtils.getFormattedISOTime(13, 59, 59);
-    webParams = new ParametersMonitoringUrl("test-url", beginTime,
+    parametersMonitoringUrl = new ParametersMonitoringUrl("test-url", beginTime,
         endTime, 1, 2, 3, 200,
         1, 1000, "test");
-    parametersMonitoringUrlRepository.save(webParams);
+    parametersMonitoringUrlRepository.save(parametersMonitoringUrl);
 
     long numberEntities = parametersMonitoringUrlRepository.count();
 

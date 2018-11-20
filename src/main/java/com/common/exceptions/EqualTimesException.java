@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
- * Exception throw when begin and end times is equals
+ * Exception throw when begin and end times is equals.
  */
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 public class EqualTimesException extends RuntimeException {
