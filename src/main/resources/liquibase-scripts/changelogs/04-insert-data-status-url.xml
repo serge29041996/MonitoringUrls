@@ -1,0 +1,14 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="04" author="serge29041996" context="test">
+        <loadData tableName="StatusUrl" file="liquibase-scripts/test-data-status-url.csv">
+            <column header="id" name="id" type="numeric"/>
+            <column header="definingStatusTime" name="definingStatusTime" type="timestamp"/>
+            <column header="status" name="status" type="string"/>
+            <column header="urlId" name="urlId" type="numeric"/>
+        </loadData>
+    </changeSet>
+</databaseChangeLog>

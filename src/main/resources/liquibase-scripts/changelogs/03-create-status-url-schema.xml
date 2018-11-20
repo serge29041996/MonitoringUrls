@@ -1,0 +1,31 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="03" author="serge29041996" context="start,test">
+        <createTable tableName="StatusUrl"
+                     remarks="A table to contain statuses for url">
+            <column name="id" type="bigint">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="definingStatusTime" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="varchar(8)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="urlId" type="bigint"/>
+        </createTable>
+        <addAutoIncrement tableName="StatusUrl" columnDataType="bigint" columnName="id"
+                          startWith="1" incrementBy="1"/>
+        <addForeignKeyConstraint baseTableName="StatusUrl"
+                                 baseColumnNames="urlId"
+                                 constraintName="statusUrl_paramMonitorUrl_fk"
+                                 referencedTableName="ParametersMonitoringUrl"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE"/>
+
+    </changeSet>
+</databaseChangeLog>
