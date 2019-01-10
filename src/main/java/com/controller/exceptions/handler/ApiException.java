@@ -25,6 +25,13 @@ public class ApiException {
     this.status = status;
   }
 
+  public ApiException(HttpStatus status, String message, String debugMessage) {
+    this();
+    this.status = status;
+    this.message = message;
+    this.debugMessage = debugMessage;
+  }
+
   /**
    * Constructor for HttpStatus and exception field.
    * @param status status of response

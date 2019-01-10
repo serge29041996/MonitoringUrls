@@ -27,7 +27,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
    * @param headers HttpHeaders
    * @param status  HttpStatus
    * @param request WebRequest
-   * @return the ApiError object
+   * @return the ApiException object
    */
   @Override
   protected ResponseEntity<Object> handleMethodArgumentNotValid(
@@ -48,7 +48,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
    * @param headers HttpHeaders
    * @param status  HttpStatus
    * @param request WebRequest
-   * @return the ApiError object
+   * @return the ApiException object
    */
   @Override
   protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
@@ -63,7 +63,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
    * Handle MethodArgumentTypeMismatchException for invalid type parameter of request
    *
    * @param ex the MethodArgumentTypeMismatchException
-   * @return the ApiError object
+   * @return the ApiException object
    */
   @ExceptionHandler(MethodArgumentTypeMismatchException.class)
   protected ResponseEntity<Object> handleMethodArgumentTypeMismatch(
@@ -77,9 +77,22 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
   }
 
   /**
+   * Handle another exceptions
+   * @param ex the Exception
+   * @param request WebRequest
+   * @return the ApiException object
+   */
+  @ExceptionHandler({ Exception.class })
+  public ResponseEntity<Object> handleAll(Exception ex, WebRequest request) {
+    ApiException apiException = new ApiException(
+        HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage(), "error occurred");
+    return buildResponseEntity(apiException);
+  }
+
+  /**
    * Handle bad request exceptions
    * @param ex the exception for checking validation of parameter monitoring url
-   * @return the ApiError object
+   * @return the ApiException object
    */
   @ExceptionHandler({CompareTimesException.class, EqualParametersException.class,
       EqualTimesException.class, InvalidExpectedCodeResponseException.class,
@@ -93,7 +106,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
   /**
    * Handle existing parameter monitoring url in database
    * @param ex the ExistingParametersUrlException
-   * @return the ApiError object
+   * @return the ApiException object
    */
   @ExceptionHandler(ExistingParametersUrlException.class)
   protected ResponseEntity<Object> handleConflict(ExistingParametersUrlException ex) {
@@ -105,7 +118,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
   /**
    * Handle not found parameter monitoring url in database
    * @param ex the NotFoundParametersUrlException
-   * @return the ApiError object
+   * @return the ApiException object
    */
   @ExceptionHandler(NotFoundParametersUrlException.class)
   protected ResponseEntity<Object> handleNotFound(NotFoundParametersUrlException ex) {
