@@ -1,6 +1,6 @@
 package com.dao;
 
-import com.common.ParametersMonitoringUrl;
+import com.common.entities.ParametersMonitoringUrl;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
