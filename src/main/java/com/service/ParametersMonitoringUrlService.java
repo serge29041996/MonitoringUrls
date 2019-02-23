@@ -1,9 +1,15 @@
 package com.service;
 
-import com.common.ParametersMonitoringUrl;
-import com.common.exceptions.*;
+import com.common.entities.ParametersMonitoringUrl;
+import com.common.exceptions.CompareTimesException;
+import com.common.exceptions.EqualParametersException;
+import com.common.exceptions.EqualTimesException;
+import com.common.exceptions.ExistingParametersUrlException;
+import com.common.exceptions.InvalidExpectedCodeResponseException;
+import com.common.exceptions.InvalidSizeResponseException;
+import com.common.exceptions.InvalidTimeResponseException;
+import com.common.exceptions.NotFoundParametersUrlException;
 import com.dao.ParametersMonitoringUrlRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -12,10 +18,9 @@ import java.util.Set;
 
 @Service
 public class ParametersMonitoringUrlService implements IParametersMonitoringUrlService {
-  private Set<Integer> validHttpStatuses;
+  private Set<Integer> validHttpStatuses = new HashSet<>();
 
   {
-    validHttpStatuses = new HashSet<Integer>();
     for (int i = 100; i < 104; i++) {
       validHttpStatuses.add(i);
     }
@@ -49,8 +54,11 @@ public class ParametersMonitoringUrlService implements IParametersMonitoringUrlS
     }
   }
 
-  @Autowired
   private ParametersMonitoringUrlRepository parametersUrlRepository;
+
+  public ParametersMonitoringUrlService(ParametersMonitoringUrlRepository parametersUrlRepository) {
+    this.parametersUrlRepository = parametersUrlRepository;
+  }
 
   @Override
   public ParametersMonitoringUrl getParametersByUrl(String url)
@@ -69,7 +77,7 @@ public class ParametersMonitoringUrlService implements IParametersMonitoringUrlS
     if (findByIdParams != null) {
       return findByIdParams;
     } else {
-      throw new NotFoundParametersUrlException("Parameters was not found");
+      throw new NotFoundParametersUrlException("Parameters with id " + id + " was not found");
     }
   }
 

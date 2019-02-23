@@ -1,7 +1,14 @@
 package com.service;
 
-import com.common.ParametersMonitoringUrl;
-import com.common.exceptions.*;
+import com.common.entities.ParametersMonitoringUrl;
+import com.common.exceptions.CompareTimesException;
+import com.common.exceptions.EqualParametersException;
+import com.common.exceptions.EqualTimesException;
+import com.common.exceptions.ExistingParametersUrlException;
+import com.common.exceptions.InvalidExpectedCodeResponseException;
+import com.common.exceptions.InvalidSizeResponseException;
+import com.common.exceptions.InvalidTimeResponseException;
+import com.common.exceptions.NotFoundParametersUrlException;
 
 public interface IParametersMonitoringUrlService {
   ParametersMonitoringUrl getParametersByUrl(String url) throws NotFoundParametersUrlException;
