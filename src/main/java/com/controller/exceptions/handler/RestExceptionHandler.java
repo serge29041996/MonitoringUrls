@@ -1,6 +1,18 @@
 package com.controller.exceptions.handler;
 
-import com.common.exceptions.*;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.CONFLICT;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+
+import com.common.exceptions.CompareTimesException;
+import com.common.exceptions.EqualParametersException;
+import com.common.exceptions.EqualTimesException;
+import com.common.exceptions.ExistingParametersUrlException;
+import com.common.exceptions.InvalidExpectedCodeResponseException;
+import com.common.exceptions.InvalidSizeResponseException;
+import com.common.exceptions.InvalidTimeResponseException;
+import com.common.exceptions.NotFoundParametersUrlException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
@@ -13,8 +25,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
-import static org.springframework.http.HttpStatus.*;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
@@ -60,7 +70,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
   }
 
   /**
-   * Handle MethodArgumentTypeMismatchException for invalid type parameter of request
+   * Handle MethodArgumentTypeMismatchException for invalid type parameter of request.
    *
    * @param ex the MethodArgumentTypeMismatchException
    * @return the ApiException object
@@ -77,7 +87,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
   }
 
   /**
-   * Handle another exceptions
+   * Handle another exceptions.
    * @param ex the Exception
    * @param request WebRequest
    * @return the ApiException object
@@ -85,12 +95,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler({ Exception.class })
   public ResponseEntity<Object> handleAll(Exception ex, WebRequest request) {
     ApiException apiException = new ApiException(
-        HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage(), "error occurred");
+        INTERNAL_SERVER_ERROR, ex.getLocalizedMessage(), "error occurred");
     return buildResponseEntity(apiException);
   }
 
   /**
-   * Handle bad request exceptions
+   * Handle bad request exceptions.
    * @param ex the exception for checking validation of parameter monitoring url
    * @return the ApiException object
    */
@@ -104,7 +114,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
   }
 
   /**
-   * Handle existing parameter monitoring url in database
+   * Handle existing parameter monitoring url in database.
    * @param ex the ExistingParametersUrlException
    * @return the ApiException object
    */
@@ -116,7 +126,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
   }
 
   /**
-   * Handle not found parameter monitoring url in database
+   * Handle not found parameter monitoring url in database.
    * @param ex the NotFoundParametersUrlException
    * @return the ApiException object
    */

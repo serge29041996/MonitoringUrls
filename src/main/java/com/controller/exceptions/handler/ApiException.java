@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class for saving error information to response.
+ * Class for saving exception information to response.
  */
 @Data
 public class ApiException {
@@ -20,11 +20,21 @@ public class ApiException {
   private ApiException() {
   }
 
+  /**
+   * Constructor for HttpStatus.
+   * @param status status of response
+   */
   public ApiException(HttpStatus status) {
     this();
     this.status = status;
   }
 
+  /**
+   * Constructor for HttpStatus, message and debug message.
+   * @param status status of response
+   * @param message message of exception
+   * @param debugMessage debug message of exception
+   */
   public ApiException(HttpStatus status, String message, String debugMessage) {
     this();
     this.status = status;
@@ -35,7 +45,7 @@ public class ApiException {
   /**
    * Constructor for HttpStatus and exception field.
    * @param status status of response
-   * @param message message of error
+   * @param message message of exception
    * @param ex exception
    */
   public ApiException(HttpStatus status, String message, Throwable ex) {
