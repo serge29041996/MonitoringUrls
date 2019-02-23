@@ -17,3 +17,7 @@ div.message {
 p.output-message {
   display: block;
 }
+
+span.danger-message {
+  color: red;
+}

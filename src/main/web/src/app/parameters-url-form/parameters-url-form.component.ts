@@ -1,10 +1,10 @@
+import { ValidateNumberFieldData } from './validate-number-field-data.model';
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ParametersMonitoringUrl} from './parameters-monitoring-url.model';
 import {Router, ActivatedRoute} from '@angular/router';
-import {NgForm} from "@angular/forms";
-import {Time} from "@angular/common";
-import {isUndefined} from "util";
-import {ParametersUrlService} from "./parameters-url.service";
+import {NgForm} from '@angular/forms';
+import {isUndefined} from 'util';
+import {ParametersUrlService} from './parameters-url.service';
 
 @Component({
   selector: 'app-parameters-url-form',
@@ -15,7 +15,7 @@ export class ParametersUrlFormComponent implements OnInit {
   editMode: boolean;
   parametersMonitoringUrl: ParametersMonitoringUrl;
   oldParametersMonitoringUrl: ParametersMonitoringUrl;
-  @ViewChild("f") parametersForm: NgForm;
+  @ViewChild('f') parametersForm: NgForm;
   errors;
   styleForMessage = '';
   private validHttpStatus: number[];
@@ -31,21 +31,21 @@ export class ParametersUrlFormComponent implements OnInit {
     console.log(this.route.snapshot.params['id']);
     console.log(this.route.snapshot.params['operation']);
     */
-    if(this.route.snapshot.params['id']) {
+    if (this.route.snapshot.params['id']) {
       if (this.route.snapshot.params['operation'] !== 'update') {
         this.router.navigate(['/not-found']);
-        //console.log('Invalid operation');
+        // console.log('Invalid operation');
       } else {
         if (!this.isNumber(this.route.snapshot.params['id'])) {
           this.router.navigate(['/not-found']);
-          //console.log('Invalid id');
+          // console.log('Invalid id');
         } else {
           this.editMode = true;
           this.idUpdatedUrl = +this.route.snapshot.params['id'];
 
           this.parametersUrlService.getParametersMonitoringUrl(this.idUpdatedUrl).subscribe(
             (data: ParametersMonitoringUrl) => {
-              console.log("Data from rest");
+              console.log('Data from rest');
               console.log(data);
               this.oldParametersMonitoringUrl = data;
               if (data.substringResponse == null) {
@@ -61,9 +61,9 @@ export class ParametersUrlFormComponent implements OnInit {
                 this.parametersMonitoringUrl.substringResponse = data.substringResponse;
               }
 
-              console.log("old parameters: ");
+              console.log('old parameters: ');
               console.log(this.oldParametersMonitoringUrl);
-              console.log("current parameters: ");
+              console.log('current parameters: ');
               console.log(this.parametersMonitoringUrl);
 
               this.initializationErrorsOfFields();
@@ -77,30 +77,30 @@ export class ParametersUrlFormComponent implements OnInit {
       }
     } else {
       if (this.route.snapshot.params['operation'] !== 'create') {
-        //this.router.navigate(['/not-found']);
+        // this.router.navigate(['/not-found']);
         console.log('Invalid operation for create');
       } else {
-        console.log("Id is not a parameter");
-        let date = new Date();
+        // console.log('Id is not a parameter');
+        const date = new Date();
         date.setHours(0, 0);
 
-        let beginTimeMonitoring = date.toTimeString().substring(0,5);
-        let endTimeMonitoring = date.toTimeString().substring(0,5);
+        const beginTimeMonitoring = date.toTimeString().substring(0, 5);
+        const endTimeMonitoring = date.toTimeString().substring(0, 5);
 
-        this.parametersMonitoringUrl = new ParametersMonitoringUrl('', beginTimeMonitoring, endTimeMonitoring, 1, 2,
-          3, 100, 1, 1000, '');
+        this.parametersMonitoringUrl = new ParametersMonitoringUrl('', beginTimeMonitoring,
+         endTimeMonitoring, 1, 2, 3, 100, 1, 1000, '');
         this.initializationErrorsOfFields();
       }
     }
   }
 
   initializationErrorsOfFields() {
-    let keysParameters = Object.keys(this.parametersMonitoringUrl);
-    console.log(keysParameters);
-    let countElements = keysParameters.length;
+    const keysParameters = Object.keys(this.parametersMonitoringUrl);
+    // console.log(keysParameters);
+    const countElements = keysParameters.length;
     this.errors = [];
     for (let i = 0; i < countElements; i++) {
-      if(keysParameters[i] !== 'id') {
+      if (keysParameters[i] !== 'id') {
         this.errors.push({
           'field': keysParameters[i],
           'message': ''
@@ -113,7 +113,7 @@ export class ParametersUrlFormComponent implements OnInit {
       'message': ''
     });
 
-    console.log(this.errors);
+    // console.log(this.errors);
   }
 
   resetValidationErrorsOfFields() {
@@ -125,19 +125,19 @@ export class ParametersUrlFormComponent implements OnInit {
   onSubmit() {
     this.resetValidationErrorsOfFields();
     console.log(this.parametersForm);
-    if(!this.editMode) {
+    if (!this.editMode) {
       this.validUrlField();
       this.validTimeMonitoringFields();
       this.validTimeResponseFields();
       this.validateExpectedCodeResponseField();
       this.validateSizeOfResponseFields();
-      if(!this.isHaveErrors()) {
+      if (!this.isHaveErrors()) {
         console.log(this.parametersMonitoringUrl);
         if (this.parametersMonitoringUrl.substringResponse === '') {
           this.parametersMonitoringUrl.substringResponse = null;
         }
 
-        this.getDateAsISOFormat();
+        this.getTimeMonitoringsAsISOFormat();
 
         this.parametersUrlService.saveParametersMonitoringUrl(this.parametersMonitoringUrl).subscribe(
           (data: any) => {
@@ -147,15 +147,13 @@ export class ParametersUrlFormComponent implements OnInit {
             this.resetDataOfParametersMonitoringUrl();
           },
           (error) => {
-            if(error.subErrors === null){
+            if (error.subErrors === null) {
               this.errors[10].message = error.message;
               this.outputMessage();
-            }
-            else if(error.subErrors.length === 0){
+            } else if (error.subErrors.length === 0) {
               this.errors[10].message = error.message;
               this.outputMessage();
-            }
-            else{
+            } else {
               this.setErrorsOfResponse(error.subErrors);
             }
           }
@@ -167,8 +165,8 @@ export class ParametersUrlFormComponent implements OnInit {
   }
 
   validUrlField() {
-    if (this.parametersForm.value["url"] == '') {
-      this.errors[0].message = "Field is empty";
+    if (this.parametersForm.value['url'] === '') {
+      this.errors[0].message = 'Field cannot be empty';
     }
   }
 
@@ -177,37 +175,45 @@ export class ParametersUrlFormComponent implements OnInit {
     let beginTimeMonitoring;
     let endTimeMonitoring;
 
-    if (this.parametersForm.value["beginTimeMonitoring"] === '') {
-      this.errors[1].message = "Field cannot be empty";
-      isNotEmptyFields = false;
+    if (this.parametersForm.value['beginTimeMonitoring'] === '') {
+      isNotEmptyFields = this.initializeEmptyMonitoringTimeFieldError(1);
     } else {
-      let beginTimeMonitoringString = this.parametersForm.value["beginTimeMonitoring"];
-      beginTimeMonitoring = new Date();
-      beginTimeMonitoring.setMinutes(beginTimeMonitoringString.substring(0, 2),
-        beginTimeMonitoringString.substring(3, 5), 0);
+      beginTimeMonitoring = this.
+      formateDateFromString(this.parametersForm.value['beginTimeMonitoring']);
     }
 
-    if (this.parametersForm.value["endTimeMonitoring"] === '') {
-      this.errors[2].message = "Field cannot be empty";
-      isNotEmptyFields = false;
+    if (this.parametersForm.value['endTimeMonitoring'] === '') {
+      isNotEmptyFields = this.initializeEmptyMonitoringTimeFieldError(2);
     } else {
-      let endTimeMonitoringString = this.parametersForm.value["endTimeMonitoring"];
-      endTimeMonitoring = new Date();
-      endTimeMonitoring.setMinutes(endTimeMonitoringString.substring(0, 2),
-        endTimeMonitoringString.substring(3, 5), 0);
+      endTimeMonitoring = this.
+      formateDateFromString(this.parametersForm.value['endTimeMonitoring']);
     }
 
     if (isNotEmptyFields) {
       if (beginTimeMonitoring.getTime() > endTimeMonitoring.getTime()) {
-        this.errors[10].message = this.errors[10].message.concat("Begin time is more than end time.");
-      } else if (beginTimeMonitoring.getTime() == endTimeMonitoring.getTime()) {
-        this.errors[10].message = this.errors[10].message.concat("Begin and end time is equal.");
+        this.errors[10].message = this.errors[10].message.concat('Begin time is more than end time.');
+      } else if (beginTimeMonitoring.getTime() === endTimeMonitoring.getTime()) {
+        this.errors[10].message = this.errors[10].message.concat('Begin and end time is equal.');
       }
     }
   }
 
+  initializeEmptyMonitoringTimeFieldError (index: number): boolean {
+    this.errors[index].message = 'Field cannot be empty';
+    return false;
+  }
+
+  formateDateFromString(stringDate): Date {
+    const stringWithDate = stringDate;
+    const formatedDate = new Date();
+    formatedDate.setMinutes(stringWithDate.substring(0, 2),
+    stringWithDate.substring(3, 5), 0);
+
+    return formatedDate;
+  }
+
   private isNumber(fieldValue: string): boolean {
-    let value = parseInt(fieldValue);
+    const value = parseInt(fieldValue, 10);
     return !isNaN(value) && isFinite(value);
   }
 
@@ -216,98 +222,85 @@ export class ParametersUrlFormComponent implements OnInit {
     let timeResponseOK;
     let timeResponseWarning;
     let timeResponseCritical;
-    if (this.isNumber(this.parametersForm.value["timeResponseOk"])) {
-      timeResponseOK = +this.parametersForm.value["timeResponseOk"];
-      if (timeResponseOK < 1) {
-        this.errors[3].message = "Time response for status OK cannot be less than 1";
-        isValidTimeResponseFields = false;
-      }
-    } else {
-      this.errors[3].message = "Time response for status OK is not number";
-      isValidTimeResponseFields = false;
-    }
-    if (this.isNumber(this.parametersForm.value["timeResponseWarning"])) {
-      timeResponseWarning = +this.parametersForm.value["timeResponseWarning"];
-      if (timeResponseWarning < 1) {
-        this.errors[4].message = "Time response for status Warning cannot be less than 1";
-        isValidTimeResponseFields = false;
-      }
-    } else {
-      this.errors[4].message = "Time response for status Warning is not number";
-      isValidTimeResponseFields = false;
-    }
-    if (this.isNumber(this.parametersForm.value["timeResponseCritical"])) {
-      timeResponseCritical = +this.parametersForm.value["timeResponseCritical"];
-      if (timeResponseCritical < 1) {
-        this.errors[5].message = "Time response for status Critical cannot be less than 1";
-        isValidTimeResponseFields = false;
-      }
-    } else {
-      this.errors[5].message = "Time response for status Critical is not number";
-      isValidTimeResponseFields = false;
-    }
+    const timeResponseData = new ValidateNumberFieldData(0, true);
+    this.validateTimeResponseField(timeResponseData, this.parametersForm.value['timeResponseOk'],
+     3, 'OK');
+    timeResponseOK = timeResponseData.numberData;
+
+    this.validateTimeResponseField(timeResponseData,
+      this.parametersForm.value['timeResponseWarning'], 4, 'Warning');
+    timeResponseWarning = timeResponseData.numberData;
+
+    this.validateTimeResponseField(timeResponseData,
+      this.parametersForm.value['timeResponseCritical'], 5, 'Critical');
+    timeResponseCritical = timeResponseData.numberData;
+
+    isValidTimeResponseFields = timeResponseData.isValidField;
 
     if (isValidTimeResponseFields) {
-      if (timeResponseOK == timeResponseWarning || timeResponseOK == timeResponseCritical) {
-        this.errors[10].message = this.errors[10].message.concat("Time response for status OK cannot be equal to " +
-          "other statuses.");
+      if (timeResponseOK === timeResponseWarning || timeResponseOK === timeResponseCritical) {
+        this.errors[10].message = this.errors[10].message.concat('Time response for status OK cannot be equal to ' +
+          'other statuses.');
       }
-      let minTimeResponse = Math.min(Math.min(timeResponseOK, timeResponseWarning), timeResponseCritical);
-      if (minTimeResponse != timeResponseOK) {
-        this.errors[10].message = this.errors[10].message.concat("Time response for status OK should have the " +
-          "smallest value.");
+      const minTimeResponse = Math.min(Math.min(timeResponseOK, timeResponseWarning),
+      timeResponseCritical);
+      if (minTimeResponse !== timeResponseOK) {
+        this.errors[10].message = this.errors[10].message.concat('Time response for status OK should have the ' +
+          'smallest value.');
       }
-      let maxTimeResponse = Math.max(Math.max(timeResponseOK, timeResponseWarning), timeResponseCritical);
-      if (maxTimeResponse != timeResponseCritical) {
-        this.errors[10].message = this.errors[10].message.concat("Time response for status Critical should be " +
-          "the biggest value.");
+      const maxTimeResponse = Math.max(Math.max(timeResponseOK, timeResponseWarning),
+      timeResponseCritical);
+      if (maxTimeResponse !== timeResponseCritical) {
+        this.errors[10].message = this.errors[10].message.concat('Time response for status Critical should be ' +
+          'the biggest value.');
       }
+    }
+  }
+
+  validateTimeResponseField(data: ValidateNumberFieldData, timeResponse: string, index: number,
+    nameStatus: string) {
+    if (this.isNumber(timeResponse)) {
+      data.numberData = +timeResponse;
+      if (data.numberData < 1) {
+        this.errors[index].message = 'Time response for status ' + nameStatus +
+         ' cannot be less than 1';
+        data.isValidField = false;
+      }
+    } else {
+      this.errors[index].message = 'Time response for status ' + nameStatus +  ' is not number';
+      data.isValidField = false;
     }
   }
 
   initializeValidHttpStatuses() {
     this.validHttpStatus = [];
-    for (let i = 100; i < 104; i++) {
-      this.validHttpStatus.push(i);
-    }
-
-    for (let i = 200; i < 209; i++) {
-      this.validHttpStatus.push(i);
-    }
-
+    this.initializeStatusesInCycle(100, 104);
+    this.initializeStatusesInCycle(200, 209);
     this.validHttpStatus.push(226);
-
-    for (let i = 300; i < 309; i++) {
-      this.validHttpStatus.push(i);
-    }
-
-    for (let i = 400; i < 419; i++) {
-      this.validHttpStatus.push(i);
-    }
-
-    for (let i = 421; i < 425; i++) {
-      this.validHttpStatus.push(i);
-    }
-
+    this.initializeStatusesInCycle(300, 309);
+    this.initializeStatusesInCycle(400, 419);
+    this.initializeStatusesInCycle(421, 425);
     this.validHttpStatus.push(426);
     this.validHttpStatus.push(428);
     this.validHttpStatus.push(429);
     this.validHttpStatus.push(431);
     this.validHttpStatus.push(451);
+    this.initializeStatusesInCycle(500, 512);
+  }
 
-    for (let i = 500; i < 512; i++) {
+  initializeStatusesInCycle(beginIndex: number, endIndex: number) {
+    for (let i = beginIndex; i < endIndex; i++) {
       this.validHttpStatus.push(i);
     }
   }
 
   validateExpectedCodeResponseField() {
-    let isValidRangeCode = true;
     if (isUndefined(this.validHttpStatus)) {
       this.initializeValidHttpStatuses();
     }
 
-    if (this.validHttpStatus.indexOf(this.parametersForm.value["expectedCodeResponse"]) === -1) {
-      this.errors[6].message = "Invalid expected code of response";
+    if (this.validHttpStatus.indexOf(this.parametersForm.value['expectedCodeResponse']) === -1) {
+      this.errors[6].message = 'Invalid expected code of response';
     }
   }
 
@@ -315,38 +308,43 @@ export class ParametersUrlFormComponent implements OnInit {
     let isValidField = true;
     let minSizeOfResponse;
     let maxSizeOfResponse;
-    if (this.isNumber(this.parametersForm.value["minSizeResponse"])) {
-      minSizeOfResponse = this.parametersForm.value["minSizeResponse"];
-      if (minSizeOfResponse < 1) {
-        isValidField = false;
-        this.errors[7].message = "Min size of response cannot be less than 1";
-      }
-    } else {
-      this.errors[7].message = "Min size of response is not number";
-      isValidField = false;
-    }
-    if (this.isNumber(this.parametersForm.value["maxSizeResponse"])) {
-      maxSizeOfResponse = this.parametersForm.value["maxSizeResponse"];
-      if (maxSizeOfResponse < 1) {
-        isValidField = false;
-        this.errors[8].message = "Max size of response cannot be less than 1";
-      }
-    } else {
-      isValidField = false;
-      this.errors[8].message = "Max size of response is not number";
-    }
+    const sizeResponseData = new ValidateNumberFieldData(0, isValidField);
 
-    if(isValidField) {
+    this.validateSizeResponseField(sizeResponseData,
+      this.parametersForm.value['minSizeResponse'], 7, 'Min');
+    minSizeOfResponse = sizeResponseData.numberData;
+    this.validateSizeResponseField(sizeResponseData,
+      this.parametersForm.value['maxSizeResponse'], 8, 'Max');
+    maxSizeOfResponse = sizeResponseData.numberData;
+
+    isValidField = sizeResponseData.isValidField;
+
+    if (isValidField) {
       if (minSizeOfResponse > maxSizeOfResponse) {
-        this.errors[10].message = this.errors[10].message.concat("Min size of response cannot be more than max size " +
-          "of response");
+        this.errors[10].message = this.errors[10].message.concat('Min size of response cannot be more than max size ' +
+          'of response');
       }
-      if (minSizeOfResponse == maxSizeOfResponse) {
-        this.errors[10].message = this.errors[10].message.concat("Min size of response cannot be equal max size " +
-          "of response");
+      if (minSizeOfResponse === maxSizeOfResponse) {
+        this.errors[10].message = this.errors[10].message.concat('Min size of response cannot be equal max size ' +
+          'of response');
       }
     }
   }
+
+  validateSizeResponseField(sizeResponseData: ValidateNumberFieldData, data: string,
+    index: number, nameField: string) {
+      if (this.isNumber(data)) {
+        sizeResponseData.numberData = +data;
+        if (sizeResponseData.numberData < 1) {
+          sizeResponseData.isValidField = false;
+          this.errors[index].message = nameField + ' size of response cannot be less than 1';
+        }
+      } else {
+        this.errors[index].message = nameField + ' size of response is not number';
+        sizeResponseData.isValidField = false;
+      }
+  }
+
 
   isHaveErrors() {
     let isNotHaveErrors = true;
@@ -359,28 +357,24 @@ export class ParametersUrlFormComponent implements OnInit {
     return !isNotHaveErrors;
   }
 
-  getDateAsISOFormat() {
-    let beginTimeMonitoringString = this.parametersForm.value["beginTimeMonitoring"];
-    let beginTimeMonitoring = new Date();
-    beginTimeMonitoring.setMinutes(beginTimeMonitoringString.substring(0, 2),
-      beginTimeMonitoringString.substring(3, 5), 0);
+  getTimeMonitoringsAsISOFormat() {
+    const beginTimeMonitoring = this.
+    formateDateFromString(this.parametersForm.value['beginTimeMonitoring']);
 
     this.parametersMonitoringUrl.beginTimeMonitoring = beginTimeMonitoring.toISOString();
 
-    let endTimeMonitoringString = this.parametersForm.value["endTimeMonitoring"];
-    let endTimeMonitoring = new Date();
-    endTimeMonitoring.setMinutes(endTimeMonitoringString.substring(0, 2),
-      endTimeMonitoringString.substring(3, 5), 0);
+    const endTimeMonitoring = this.formateDateFromString(
+      this.parametersForm.value['endTimeMonitoring']);
 
     this.parametersMonitoringUrl.endTimeMonitoring = endTimeMonitoring.toISOString();
   }
 
   resetDataOfParametersMonitoringUrl() {
-    let date = new Date();
+    const date = new Date();
     date.setHours(0, 0);
 
-    let beginTimeMonitoring = date.toTimeString().substring(0,5);
-    let endTimeMonitoring = date.toTimeString().substring(0,5);
+    const beginTimeMonitoring = date.toTimeString().substring(0, 5);
+    const endTimeMonitoring = date.toTimeString().substring(0, 5);
 
     this.parametersMonitoringUrl.url = '';
     this.parametersMonitoringUrl.beginTimeMonitoring = beginTimeMonitoring;
@@ -397,12 +391,12 @@ export class ParametersUrlFormComponent implements OnInit {
   outputMessage() {
     this.styleForMessage = 'output-message';
     setTimeout(
-      () => this.styleForMessage = '',3000);
+      () => this.styleForMessage = '', 3000);
   }
 
   setErrorsOfResponse(errors: {field: string, message: string }[]) {
-    for(let i=0; i< errors.length; i++){
-      let someArray = [];
+    for (let i = 0; i < errors.length; i++) {
+      const someArray = [];
 
       this.errors.find(
         x => x.field === errors[i].field
@@ -413,5 +407,4 @@ export class ParametersUrlFormComponent implements OnInit {
   onReturnToList() {
     this.router.navigate(['/']);
   }
-
 }

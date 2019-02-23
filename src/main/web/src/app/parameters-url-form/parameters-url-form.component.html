@@ -13,7 +13,7 @@
     [(ngModel)]="parametersMonitoringUrl.url"
     name="url"
     required>
-  <span *ngIf="errors[0].message !== ''">{{errors[0].message}}</span>
+  <span class="danger-message" *ngIf="errors[0].message !== ''">{{errors[0].message}}</span>
   <br>
   <label for="beginTimeMonitoring">Begin Time Monitoring:</label>
   <input
@@ -22,7 +22,7 @@
     [(ngModel)]="parametersMonitoringUrl.beginTimeMonitoring"
     name="beginTimeMonitoring"
     required>
-  <span *ngIf="errors[1].message !== ''">{{errors[1].message}}</span>
+  <span class="danger-message" *ngIf="errors[1].message !== ''">{{errors[1].message}}</span>
   <br>
   <label for="endTimeMonitoring">End Time Monitoring:</label>
   <input
@@ -31,7 +31,7 @@
     [(ngModel)]="parametersMonitoringUrl.endTimeMonitoring"
     name="endTimeMonitoring"
     required>
-  <span *ngIf="errors[2].message !== ''">{{errors[2].message}}</span>
+  <span class="danger-message" *ngIf="errors[2].message !== ''">{{errors[2].message}}</span>
   <br>
   <label for="timeResponseOk">Time Response for OK:</label>
   <input
@@ -41,7 +41,7 @@
     name="timeResponseOk"
     required
     min="1">
-  <span *ngIf="errors[3].message !== ''">{{errors[3].message}}</span>
+  <span class="danger-message" *ngIf="errors[3].message !== ''">{{errors[3].message}}</span>
   <br>
   <label for="timeResponseWarning">Time Response for WARNING:</label>
   <input
@@ -51,7 +51,7 @@
     name="timeResponseWarning"
     required
     min="1">
-  <span *ngIf="errors[4].message !== ''">{{errors[4].message}}</span>
+  <span class="danger-message" *ngIf="errors[4].message !== ''">{{errors[4].message}}</span>
   <br>
   <label for="timeResponseCritical">Time Response for CRITICAL:</label>
   <input
@@ -61,7 +61,7 @@
     name="timeResponseCritical"
     required
     min="1">
-  <span *ngIf="errors[5].message !== ''">{{errors[5].message}}</span>
+  <span class="danger-message" *ngIf="errors[5].message !== ''">{{errors[5].message}}</span>
   <br>
   <label for="expectedCodeResponse">Expected Code Response:</label>
   <input
@@ -72,7 +72,7 @@
     required
     min="100"
     max="512">
-  <span *ngIf="errors[6].message !== ''">{{errors[6].message}}</span>
+  <span class="danger-message" *ngIf="errors[6].message !== ''">{{errors[6].message}}</span>
   <br>
   <label for="minSizeResponse">Min Size of Response:</label>
   <input
@@ -82,7 +82,7 @@
     name="minSizeResponse"
     required
     min="1">
-  <span *ngIf="errors[7].message !== ''">{{errors[7].message}}</span>
+  <span class="danger-message" *ngIf="errors[7].message !== ''">{{errors[7].message}}</span>
   <br>
   <label for="maxSizeResponse">Max Size of Response:</label>
   <input
@@ -92,7 +92,7 @@
     name="maxSizeResponse"
     required
     min="1">
-  <span *ngIf="errors[8].message !== ''">{{errors[8].message}}</span>
+  <span class="danger-message" *ngIf="errors[8].message !== ''">{{errors[8].message}}</span>
   <br>
   <label for="substringResponse">Substring of Response:</label>
   <input
@@ -100,7 +100,7 @@
     type="text"
     [(ngModel)]="parametersMonitoringUrl.substringResponse"
     name="substringResponse">
-  <span *ngIf="errors[9].message !== ''">{{errors[9].message}}</span>
+  <span class="danger-message" *ngIf="errors[9].message !== ''">{{errors[9].message}}</span>
   <br>
   <button type="button" (click)="onReturnToList()">Back To List</button>
   <button type="submit">Submit Data</button>
