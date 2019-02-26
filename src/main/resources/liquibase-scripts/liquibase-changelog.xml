@@ -6,5 +6,6 @@
     <include file="changelogs/01-create-parameters-monitoring-url-schema.xml" relativeToChangelogFile="true"/>
     <include file="changelogs/02-insert-data-parameters-monitoring-url.xml" relativeToChangelogFile="true"/>
     <include file="changelogs/03-create-status-url-schema.xml" relativeToChangelogFile="true"/>
-    <include file="changelogs/04-insert-data-status-url.xml" relativeToChangelogFile="true"/>
+    <include file="changelogs/04-add-foreign-key-status-parameters.xml" relativeToChangelogFile="true"/>
+    <include file="changelogs/05-insert-data-status-url.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

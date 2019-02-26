@@ -6,7 +6,7 @@
     <changeSet id="01" author="serge29041996" context="start,test">
         <createTable tableName="ParametersMonitoringUrl"
                      remarks="A table to contain parameters for monitoring urls">
-            <column name="id" type="bigint">
+            <column autoIncrement="true" name="id" type="bigint" startWith="100" incrementBy="1">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="url" type="varchar(500)">
@@ -26,6 +26,8 @@
             <column name="maxSizeResponse" type="int"/>
             <column name="substringResponse" type="varchar(100)"/>
         </createTable>
-        <addAutoIncrement tableName="ParametersMonitoringUrl" columnDataType="bigint" columnName="id" startWith="100" incrementBy="1"/>
+        <rollback>
+            <dropTable tableName="ParametersMonitoringUrl"/>
+        </rollback>
     </changeSet>
 </databaseChangeLog>

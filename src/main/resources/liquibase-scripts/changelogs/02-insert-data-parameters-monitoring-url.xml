@@ -18,5 +18,8 @@
             <column header="maxSizeResponse" name="maxSizeResponse" type="numeric"/>
             <column header="substringResponse" name="substringResponse" type="string"/>
         </loadData>
+        <rollback>
+            <delete tableName="ParametersMonitoringUrl"/>
+        </rollback>
     </changeSet>
 </databaseChangeLog>

@@ -7,6 +7,7 @@
     <groupId>com.monitoringurls</groupId>
     <artifactId>com.monitoringurls</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <name>MonitoringUrls</name>
     <packaging>jar</packaging>
 
     <parent>
@@ -24,7 +25,25 @@
         <integration-tests.skip>false</integration-tests.skip>
         <surefire.failsafe.version>2.22.0</surefire.failsafe.version>
         <minimum.covered.percentage>0.90</minimum.covered.percentage>
+        <sonar.sources>src/main</sonar.sources>
+        <sonar.tests>src/test</sonar.tests>
+        <sonar.projectName>${project.name}</sonar.projectName>
+        <sonar.projectKey>${project.groupId}:${project.artifactId}</sonar.projectKey>
+        <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+        <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+        <sonar.jacoco.reportPaths>${project.build.directory}/coverage-reports/aggregate.exec</sonar.jacoco.reportPaths>
+        <sonar.language>java</sonar.language>
     </properties>
+
+    <profiles>
+        <profile>
+            <id>sonar-analyze-classes</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+    </profiles>
+
 
     <dependencies>
         <!-- For Common Level -->
@@ -83,6 +102,13 @@
             <version>${org.springframework.boot.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.6</version>
+            <scope>test</scope>
+            <classifier>tests</classifier>
+        </dependency>
         <!-- For running application -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -116,6 +142,12 @@
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>fluent-hc</artifactId>
             <version>4.5.6</version>
+        </dependency>
+        <!-- For connecting with mysql database -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.15</version>
         </dependency>
     </dependencies>
 
@@ -261,10 +293,21 @@
                                 <destFile>${project.build.directory}/coverage-reports/aggregate.exec</destFile>
                             </configuration>
                         </execution>
+                        <execution>
+                            <id>post-merge-report</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                            <configuration>
+                                <dataFile>${project.build.directory}/coverage-reports/aggregate.exec</dataFile>
+                                <outputDirectory>${project.reporting.outputDirectory}/jacoco-aggregate</outputDirectory>
+                            </configuration>
+                        </execution>
 
                         <execution>
                             <id>jacoco-check</id>
-                            <phase>install</phase>
+                            <phase>verify</phase>
                             <goals>
                                 <goal>check</goal>
                             </goals>
@@ -282,17 +325,6 @@
                                         </limits>
                                     </rule>
                                 </rules>
-                            </configuration>
-                        </execution>
-                        <execution>
-                            <id>post-merge-report</id>
-                            <phase>verify</phase>
-                            <goals>
-                                <goal>report</goal>
-                            </goals>
-                            <configuration>
-                                <dataFile>${project.build.directory}/coverage-reports/aggregate.exec</dataFile>
-                                <outputDirectory>${project.reporting.outputDirectory}/jacoco-aggregate</outputDirectory>
                             </configuration>
                         </execution>
                     </executions>
@@ -328,6 +360,11 @@
                         </execution>
                     </executions>
                 </plugin>
+                <plugin>
+                    <groupId>org.sonarsource.scanner.maven</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>3.5.0.1254</version>
+                </plugin>
             </plugins>
         </pluginManagement>
 
@@ -349,16 +386,20 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
             <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
             </plugin>
         </plugins>
 
