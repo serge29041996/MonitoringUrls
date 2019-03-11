@@ -1,10 +1,12 @@
 package com.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertNull;
 
 import com.common.DataUtils;
 import com.common.entities.ParametersMonitoringUrl;
 import com.common.TimeData;
+import com.common.exceptions.ApiValidationException;
 import com.common.exceptions.CompareTimesException;
 import com.common.exceptions.EqualParametersException;
 import com.common.exceptions.EqualTimesException;
@@ -23,7 +25,7 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ParametersMonitoringUrlServiceTests {
+public class ParametersMonitoringUrlServiceTest {
   @Mock
   private ParametersMonitoringUrlRepository parametersMonitoringUrlRepository;
   private static final String URL_TEST = "someUrl";
@@ -45,39 +47,41 @@ public class ParametersMonitoringUrlServiceTests {
     ParametersMonitoringUrl newParams = DataUtils.initValidParametersWithDateMonitoring(NEW_URL_TEST,
         new TimeData(12, 0, 0),
         new TimeData(23, 59, 59));
-    Mockito.when(parametersMonitoringUrlRepository.save(params)).thenReturn(newParams);
+    Mockito.when(parametersMonitoringUrlRepository.save(newParams)).thenReturn(newParams);
   }
 
   @Test
-  public void testGetParametersByUrlExistingEntity() {
+  public void testGetParametersByUrlExistingEntity() throws ApiValidationException {
     ParametersMonitoringUrl params = DataUtils.initValidParametersWithDateMonitoring(URL_TEST,
         new TimeData(12, 0, 0),
         new TimeData(23, 59, 59));
-    ParametersMonitoringUrl findByUrlParams = parametersMonitoringUrlService.getParametersByUrl(URL_TEST);
+    ParametersMonitoringUrl findByUrlParams =
+        parametersMonitoringUrlService.getParametersByUrl(URL_TEST);
     assertThat(findByUrlParams).isEqualTo(params);
   }
 
   @Test(expected = NotFoundParametersUrlException.class)
-  public void testGetParametersByUrlNotExistingEntity() {
+  public void testGetParametersByUrlNotExistingEntity() throws ApiValidationException {
     parametersMonitoringUrlService.getParametersByUrl("testUrl");
   }
 
   @Test
-  public void testGetParametersByIdExistingEntity() {
+  public void testGetParametersByIdExistingEntity() throws ApiValidationException {
     ParametersMonitoringUrl params = DataUtils.initValidParametersWithDateMonitoring(URL_TEST,
         new TimeData(12, 0, 0),
         new TimeData(23, 59, 59));
-    ParametersMonitoringUrl findByIdParams = parametersMonitoringUrlService.getParametersById(101);
+    ParametersMonitoringUrl findByIdParams =
+        parametersMonitoringUrlService.getParametersById(101);
     assertThat(findByIdParams).isEqualTo(params);
   }
 
   @Test(expected = NotFoundParametersUrlException.class)
-  public void testGetParametersByIdNotExistEntity() {
+  public void testGetParametersByIdNotExistEntity() throws ApiValidationException {
     parametersMonitoringUrlService.getParametersById(100);
   }
 
   @Test(expected = ExistingParametersUrlException.class)
-  public void testSaveExistingParams() {
+  public void testSaveExistingParams() throws ApiValidationException {
     ParametersMonitoringUrl params = DataUtils.initValidParametersWithDateMonitoring(URL_TEST,
         new TimeData(12, 0, 0),
         new TimeData(23, 59, 59));
@@ -85,7 +89,7 @@ public class ParametersMonitoringUrlServiceTests {
   }
 
   @Test(expected = CompareTimesException.class)
-  public void testSaveParamsWithBadTimesValue() {
+  public void testSaveParamsWithBadTimesValue() throws ApiValidationException {
     ParametersMonitoringUrl params = DataUtils.initValidParametersWithDateMonitoring(NEW_URL_TEST,
         new TimeData(12, 0, 0),
         new TimeData(11, 59, 59));
@@ -93,7 +97,7 @@ public class ParametersMonitoringUrlServiceTests {
   }
 
   @Test(expected = EqualTimesException.class)
-  public void testSaveParamsWithEqualBeginAndEndTimes() {
+  public void testSaveParamsWithEqualBeginAndEndTimes() throws ApiValidationException {
     ParametersMonitoringUrl params = DataUtils.initValidParametersWithDateMonitoring(NEW_URL_TEST,
         new TimeData(12,0,0),
         new TimeData(12,0,0));
@@ -101,7 +105,8 @@ public class ParametersMonitoringUrlServiceTests {
   }
 
   @Test(expected = InvalidTimeResponseException.class)
-  public void testSaveParamsWithEqualTimeResponseForDifferentStatus() {
+  public void testSaveParamsWithEqualTimeResponseForDifferentStatus()
+      throws ApiValidationException {
     ParametersMonitoringUrl params = DataUtils.initValidParametersWithDateMonitoring(NEW_URL_TEST,
         new TimeData(12,0,0),
         new TimeData(23,0,0));
@@ -112,7 +117,7 @@ public class ParametersMonitoringUrlServiceTests {
   }
 
   @Test(expected = InvalidTimeResponseException.class)
-  public void testSaveParamsWithTheBiggerValueForStatusOk() {
+  public void testSaveParamsWithTheBiggerValueForStatusOk() throws ApiValidationException {
     ParametersMonitoringUrl params = DataUtils.initValidParametersWithDateMonitoring(NEW_URL_TEST,
         new TimeData(12,0,0),
         new TimeData(23,0,0));
@@ -123,7 +128,7 @@ public class ParametersMonitoringUrlServiceTests {
   }
 
   @Test(expected = InvalidTimeResponseException.class)
-  public void testSaveParamsWithTheLeastValueForStatusCritical() {
+  public void testSaveParamsWithTheLeastValueForStatusCritical() throws ApiValidationException {
     ParametersMonitoringUrl params = DataUtils.initValidParametersWithDateMonitoring(NEW_URL_TEST,
         new TimeData(12,0,0),
         new TimeData(23,0,0));
@@ -134,7 +139,7 @@ public class ParametersMonitoringUrlServiceTests {
   }
 
   @Test(expected = InvalidExpectedCodeResponseException.class)
-  public void testSaveParamsWithInvalidExpectedCodeResponse() {
+  public void testSaveParamsWithInvalidExpectedCodeResponse() throws ApiValidationException {
     ParametersMonitoringUrl params = DataUtils.initValidParametersWithDateMonitoring(NEW_URL_TEST,
         new TimeData(12,0,0),
         new TimeData(23,0,0));
@@ -143,7 +148,7 @@ public class ParametersMonitoringUrlServiceTests {
   }
 
   @Test(expected = InvalidSizeResponseException.class)
-  public void testSaveParamsWithEqualMinAndMaxSizeResponse() {
+  public void testSaveParamsWithEqualMinAndMaxSizeResponse() throws ApiValidationException {
     ParametersMonitoringUrl params = DataUtils.initValidParametersWithDateMonitoring(NEW_URL_TEST,
         new TimeData(12,0,0),
         new TimeData(23,0,0));
@@ -153,7 +158,7 @@ public class ParametersMonitoringUrlServiceTests {
   }
 
   @Test(expected = InvalidSizeResponseException.class)
-  public void testSaveParamsWithBiggerMinSizeResponse() {
+  public void testSaveParamsWithBiggerMinSizeResponse() throws ApiValidationException {
     ParametersMonitoringUrl params = DataUtils.initValidParametersWithDateMonitoring(NEW_URL_TEST,
         new TimeData(12,0,0),
         new TimeData(23,0,0));
@@ -163,15 +168,23 @@ public class ParametersMonitoringUrlServiceTests {
   }
 
   @Test
-  public void testSaveParamsValidParams() {
+  public void testSaveParamsValidParams() throws ApiValidationException {
     ParametersMonitoringUrl params = DataUtils.initValidParametersWithDateMonitoring(NEW_URL_TEST,
         new TimeData(12,0,0),
-        new TimeData(23,0,0));
-    parametersMonitoringUrlService.saveParametersUrl(params);
+        new TimeData(23,59,59));
+    ParametersMonitoringUrl params2 = DataUtils.initValidParametersWithDateMonitoring(NEW_URL_TEST,
+        new TimeData(12,0,0),
+        new TimeData(23,59,59));
+    if (params.equals(params2)) {
+      int i = 0;
+    }
+    ParametersMonitoringUrl savedParametersUrl =
+        parametersMonitoringUrlService.saveParametersUrl(params);
+    assertThat(savedParametersUrl.getUrl()).isEqualTo(NEW_URL_TEST);
   }
 
   @Test(expected = NotFoundParametersUrlException.class)
-  public void testUpdateParamsNonExistParams() {
+  public void testUpdateParamsNonExistParams() throws ApiValidationException {
     ParametersMonitoringUrl params = DataUtils.initValidParametersWithDateMonitoring(URL_TEST,
         new TimeData(12,0,0),
         new TimeData(23,0,0));
@@ -179,7 +192,7 @@ public class ParametersMonitoringUrlServiceTests {
   }
 
   @Test(expected = EqualParametersException.class)
-  public void testUpdateParamsEqualParams() {
+  public void testUpdateParamsEqualParams() throws ApiValidationException {
     ParametersMonitoringUrl params = DataUtils.initValidParametersWithDateMonitoring(URL_TEST,
         new TimeData(12,0,0),
         new TimeData(23,59,59));
@@ -187,7 +200,7 @@ public class ParametersMonitoringUrlServiceTests {
   }
 
   @Test(expected = CompareTimesException.class)
-  public void testUpdateParamsWithBadTimeValues() {
+  public void testUpdateParamsWithBadTimeValues() throws ApiValidationException {
     ParametersMonitoringUrl newParams = DataUtils.initValidParametersWithDateMonitoring(URL_TEST,
         new TimeData(23,0,0),
         new TimeData(12,0,0));
@@ -196,7 +209,7 @@ public class ParametersMonitoringUrlServiceTests {
   }
 
   @Test(expected = EqualTimesException.class)
-  public void testUpdateParamsEqualBeginAndEndTimes() {
+  public void testUpdateParamsEqualBeginAndEndTimes() throws ApiValidationException {
     ParametersMonitoringUrl newParams = DataUtils.initValidParametersWithDateMonitoring(URL_TEST,
         new TimeData(12,0,0),
         new TimeData(12,0,0));
@@ -205,21 +218,17 @@ public class ParametersMonitoringUrlServiceTests {
   }
 
   @Test
-  public void testUpdateParamsValidParams() {
+  public void testUpdateParamsValidParams() throws ApiValidationException {
     ParametersMonitoringUrl newParams = DataUtils.initValidParametersWithDateMonitoring(URL_TEST,
         new TimeData(12,0,0),
         new TimeData(22,59,59));
     newParams.setMinSizeResponse(10);
     parametersMonitoringUrlService.updateParametersUrl(101, newParams);
+    assertThat(newParams.getMinSizeResponse()).isEqualTo(10);
   }
 
   @Test(expected = NotFoundParametersUrlException.class)
-  public void testDeleteNotExistParams() {
+  public void testDeleteNotExistParams() throws ApiValidationException {
     parametersMonitoringUrlService.deleteParametersMonitoringUrl(100);
-  }
-
-  @Test
-  public void testDeleteExistParams() {
-    parametersMonitoringUrlService.deleteParametersMonitoringUrl(101);
   }
 }

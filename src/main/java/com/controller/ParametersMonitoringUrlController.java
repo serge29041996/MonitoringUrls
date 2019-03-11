@@ -1,7 +1,15 @@
+/*
+ * Copyright (C) 2019.
+ * This file is part of project MonitoringUrls
+ * Written by Sergiy Krasnikov <sergei29041996@gmail.com>
+ */
+
 package com.controller;
 
+import com.common.ParametersMonitoringUrlDto;
 import com.common.StatusInfo;
 import com.common.entities.ParametersMonitoringUrl;
+import com.common.exceptions.ApiValidationException;
 import com.service.IParametersMonitoringUrlService;
 import com.service.IValidationStatusService;
 import io.swagger.annotations.Api;
@@ -25,16 +33,31 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 
+/**
+ * Realization of controller for managing with url and its parameters for defining status.
+ */
 @Controller
 @RequestMapping("/")
 @Api(value = "parametersMonitoringUrls")
 public class ParametersMonitoringUrlController {
-
-  @Autowired
+  /** Service for working with url and its parameters for defining status. */
   private IParametersMonitoringUrlService parametersMonitoringUrlService;
 
-  @Autowired
+  /** Service for defining status of url. */
   private IValidationStatusService validationStatusService;
+
+  /**
+   * Constructor for controller with service.
+   * @param parametersMonitoringUrlService service for url and its parameters
+   * @param validationStatusService service for defining status of url
+   */
+  @Autowired
+  public ParametersMonitoringUrlController(
+      IParametersMonitoringUrlService parametersMonitoringUrlService,
+      IValidationStatusService validationStatusService) {
+    this.parametersMonitoringUrlService = parametersMonitoringUrlService;
+    this.validationStatusService = validationStatusService;
+  }
 
   /**
    * Method for handle get request of parameters with using id.
@@ -48,7 +71,8 @@ public class ParametersMonitoringUrlController {
       })
   @GetMapping("/parameters/{id}")
   @CrossOrigin(origins = "http://localhost:4200")
-  public ResponseEntity<Object> getParameters(@PathVariable("id") long id) {
+  public ResponseEntity<Object> getParameters(@PathVariable("id") long id) throws
+      ApiValidationException {
     ParametersMonitoringUrl parametersMonitoringUrl =
         parametersMonitoringUrlService.getParametersById(id);
     return new ResponseEntity<>(parametersMonitoringUrl, HttpStatus.OK);
@@ -56,7 +80,7 @@ public class ParametersMonitoringUrlController {
 
   /**
    * Method for handle post request of params with using url.
-   * @param parametersMonitoringUrl parameters for monitoring url
+   * @param parametersMonitoringUrlDto parameters for monitoring url
    * @param ucBuilder object for constructing URI
    * @return responseEntity object with header and Http Status
    */
@@ -69,8 +93,12 @@ public class ParametersMonitoringUrlController {
   @PostMapping("/parameters")
   @CrossOrigin(origins = "http://localhost:4200")
   public ResponseEntity<Object> saveParameters(@RequestBody @Valid
-                                                ParametersMonitoringUrl parametersMonitoringUrl,
-                                        UriComponentsBuilder ucBuilder) {
+                                                   ParametersMonitoringUrlDto
+                                                   parametersMonitoringUrlDto,
+                                        UriComponentsBuilder ucBuilder)
+      throws ApiValidationException {
+    ParametersMonitoringUrl parametersMonitoringUrl =
+        new ParametersMonitoringUrl(parametersMonitoringUrlDto);
     ParametersMonitoringUrl savedParametersMonitoringUrl =
         parametersMonitoringUrlService.saveParametersUrl(parametersMonitoringUrl);
 
@@ -83,7 +111,7 @@ public class ParametersMonitoringUrlController {
   /**
    * Method for handle put request of params with using url.
    * @param id id of the updated object
-   * @param parametersMonitoringUrl parameters for monitoring url
+   * @param parametersMonitoringUrlDto parameters for monitoring url
    * @return responseEntity object with updated object and Http Status
    */
   @ApiOperation(value = "Update parameters monitoring of existing url")
@@ -97,7 +125,11 @@ public class ParametersMonitoringUrlController {
   @CrossOrigin(origins = "http://localhost:4200")
   public ResponseEntity<Object> updateParameters(@PathVariable("id") long id,
                                             @RequestBody @Valid
-                                                ParametersMonitoringUrl parametersMonitoringUrl) {
+                                                ParametersMonitoringUrlDto
+                                                parametersMonitoringUrlDto)
+      throws ApiValidationException {
+    ParametersMonitoringUrl parametersMonitoringUrl =
+        new ParametersMonitoringUrl(parametersMonitoringUrlDto);
     parametersMonitoringUrlService.updateParametersUrl(id, parametersMonitoringUrl);
     return new ResponseEntity<>(parametersMonitoringUrl, HttpStatus.OK);
   }
@@ -114,7 +146,8 @@ public class ParametersMonitoringUrlController {
       })
   @DeleteMapping("/parameters/{id}")
   @CrossOrigin(origins = "http://localhost:4200")
-  public ResponseEntity<Object> deleteParameters(@PathVariable("id") long id) {
+  public ResponseEntity<Object> deleteParameters(@PathVariable("id") long id)
+      throws ApiValidationException {
     parametersMonitoringUrlService.deleteParametersMonitoringUrl(id);
     return new ResponseEntity<>(HttpStatus.OK);
   }
@@ -128,7 +161,8 @@ public class ParametersMonitoringUrlController {
   @ApiResponse(code = 200, message = "Status for url have checked")
   @GetMapping("/status/{id}")
   @CrossOrigin(origins = "http://localhost:4200")
-  public ResponseEntity<Object> getStatusForParameters(@PathVariable("id") long id) {
+  public ResponseEntity<Object> getStatusForParameters(@PathVariable("id") long id)
+      throws ApiValidationException {
     StatusInfo statusInfo = validationStatusService.checkResponse(id);
     return new ResponseEntity<>(statusInfo, HttpStatus.OK);
   }

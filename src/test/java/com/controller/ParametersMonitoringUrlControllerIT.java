@@ -16,8 +16,8 @@ import com.MonitoringUrlsSpringClass;
 import com.common.DataUtils;
 import com.common.TimeData;
 import com.common.entities.ParametersMonitoringUrl;
-import com.controller.exceptions.handler.ApiException;
-import com.controller.exceptions.handler.ApiValidationException;
+import com.controller.exceptions.handler.ApiExceptionData;
+import com.controller.exceptions.handler.ApiValidationExceptionData;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.service.IParametersMonitoringUrlService;
 import java.util.List;
@@ -170,7 +170,7 @@ public class ParametersMonitoringUrlControllerIT {
             .andReturn();
 
     String requestBody = mvcResult.getResponse().getContentAsString();
-    List<ApiValidationException> fieldExceptions = asJavaObjectApiException(requestBody)
+    List<ApiValidationExceptionData> fieldExceptions = asJavaObjectApiException(requestBody)
         .getSubErrors();
     assertThat(fieldExceptions.get(0).getMessage()).isEqualTo("Expected code of response should" +
         " be greater than 100");
@@ -329,10 +329,10 @@ public class ParametersMonitoringUrlControllerIT {
     }
   }
 
-  private ApiException asJavaObjectApiException(final String JSONResponse){
+  private ApiExceptionData asJavaObjectApiException(final String JSONResponse){
     try {
       final ObjectMapper mapper = new ObjectMapper();
-      return mapper.readValue(JSONResponse,ApiException.class);
+      return mapper.readValue(JSONResponse,ApiExceptionData.class);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }

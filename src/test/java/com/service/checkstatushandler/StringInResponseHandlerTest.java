@@ -26,14 +26,14 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class StringInResponseHandlerTests {
+public class StringInResponseHandlerTest {
   private static final String STATUS_OK = "OK";
   private static TestServer serverTest = new TestServer(5);
   private static String serverUrl;
   private static StringInResponseHandler stringInResponseHandler;
   private static ParametersMonitoringUrl parametersMonitoringUrl;
 
-  private static final Logger logger = Logger.getLogger(StringInResponseHandlerTests.class);
+  private static final Logger logger = Logger.getLogger(StringInResponseHandlerTest.class);
 
   @BeforeClass
   public static void setUp() {

@@ -24,14 +24,14 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ResponseSizeHandlerTests {
+public class ResponseSizeHandlerTest {
   private static final String STATUS_OK = "OK";
   private static TestServer serverTest = new TestServer(5);
   private static String serverUrl;
   private static ResponseSizeHandler responseSizeHandler;
   private static ParametersMonitoringUrl parametersMonitoringUrl;
 
-  private static final Logger logger = Logger.getLogger(ResponseSizeHandlerTests.class);
+  private static final Logger logger = Logger.getLogger(ResponseSizeHandlerTest.class);
 
   @BeforeClass
   public static void setUp() {

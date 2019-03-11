@@ -1,3 +1,9 @@
+/*
+ * Copyright (C) 2019.
+ * This file is part of project MonitoringUrls
+ * Written by Sergiy Krasnikov <sergei29041996@gmail.com>
+ */
+
 package com.controller;
 
 import org.springframework.context.annotation.Bean;
@@ -12,6 +18,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.Collections;
 
+/**
+ * Class for configuration of Swagger.
+ */
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
@@ -29,7 +38,11 @@ public class SwaggerConfig {
         .apiInfo(apiInfo());
   }
 
-  private ApiInfo apiInfo() {
+  /**
+   * Initialize object ApiInfo with necessary information.
+   * @return initialized ApiInfo object
+   */
+  private static ApiInfo apiInfo() {
     return new ApiInfo(
         "Spring Boot REST API",
         "Spring Boot REST API for Monitoring Urls",

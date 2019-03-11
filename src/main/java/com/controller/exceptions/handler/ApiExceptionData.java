@@ -1,3 +1,9 @@
+/*
+ * Copyright (C) 2019.
+ * This file is part of project MonitoringUrls
+ * Written by Sergiy Krasnikov <sergei29041996@gmail.com>
+ */
+
 package com.controller.exceptions.handler;
 
 import lombok.Data;
@@ -11,20 +17,26 @@ import java.util.List;
  * Class for saving exception information to response.
  */
 @Data
-public class ApiException {
+public class ApiExceptionData {
+  /** Http status for response. */
   private HttpStatus status;
+  /** Message of the exception. */
   private String message;
+  /** Debug message of exception. */
   private String debugMessage;
-  private List<ApiValidationException> subErrors = new ArrayList<>();
+  /** Validation errors. */
+  private List<ApiValidationExceptionData> subErrors = new ArrayList<>();
 
-  private ApiException() {
-  }
+  /**
+   * Default constructor.
+   */
+  private ApiExceptionData() {}
 
   /**
    * Constructor for HttpStatus.
    * @param status status of response
    */
-  public ApiException(HttpStatus status) {
+  public ApiExceptionData(HttpStatus status) {
     this();
     this.status = status;
   }
@@ -35,7 +47,7 @@ public class ApiException {
    * @param message message of exception
    * @param debugMessage debug message of exception
    */
-  public ApiException(HttpStatus status, String message, String debugMessage) {
+  public ApiExceptionData(HttpStatus status, String message, String debugMessage) {
     this();
     this.status = status;
     this.message = message;
@@ -48,20 +60,20 @@ public class ApiException {
    * @param message message of exception
    * @param ex exception
    */
-  public ApiException(HttpStatus status, String message, Throwable ex) {
+  public ApiExceptionData(HttpStatus status, String message, Throwable ex) {
     this();
     this.status = status;
     this.message = message;
     this.debugMessage = ex.getLocalizedMessage();
   }
 
-  private void addSubException(ApiValidationException subError) {
+  private void addSubException(ApiValidationExceptionData subError) {
     subErrors.add(subError);
   }
 
   private void addValidationError(String object, String field, Object rejectedValue,
                                       String message) {
-    addSubException(new ApiValidationException(object, field, rejectedValue, message));
+    addSubException(new ApiValidationExceptionData(object, field, rejectedValue, message));
   }
 
   private void addValidationException(FieldError fieldError) {

@@ -22,14 +22,14 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ExpectedCodeResponseHandlerTests{
+public class ExpectedCodeResponseHandlerTest {
   private static final String STATUS_OK = "OK";
   private static TestServer serverTest = new TestServer(5);
   private static String serverUrl;
   private static ExpectedCodeResponseHandler expectedCodeResponseHandler;
   private static ParametersMonitoringUrl parametersMonitoringUrl;
 
-  private static final Logger logger = Logger.getLogger(ExpectedCodeResponseHandlerTests.class);
+  private static final Logger logger = Logger.getLogger(ExpectedCodeResponseHandlerTest.class);
 
   @BeforeClass
   public static void setUp() {

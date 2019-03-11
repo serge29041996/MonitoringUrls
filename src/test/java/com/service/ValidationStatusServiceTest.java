@@ -8,6 +8,7 @@ import com.common.StatusInfo;
 import com.common.TimeData;
 import com.common.entities.ParametersMonitoringUrl;
 import com.common.entities.StatusUrl;
+import com.common.exceptions.ApiValidationException;
 import com.dao.StatusUrlRepository;
 import java.io.ByteArrayInputStream;
 import java.sql.Timestamp;
@@ -25,7 +26,7 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ValidationStatusServiceTests {
+public class ValidationStatusServiceTest {
   private static final String STATUS_OK = "OK";
   private static final String STATUS_WARNING = "WARNING";
   private static final String STATUS_CRITICAL = "CRITICAL";
@@ -33,7 +34,7 @@ public class ValidationStatusServiceTests {
   private ParametersMonitoringUrl parametersMonitoringUrl;
   private static TestServer serverTest = new TestServer(5);
   private static String serverUrl;
-  private static final Logger logger = Logger.getLogger(ValidationStatusServiceTests.class);
+  private static final Logger logger = Logger.getLogger(ValidationStatusServiceTest.class);
 
   @Mock
   private StatusUrlRepository statusUrlRepository;
@@ -149,7 +150,7 @@ public class ValidationStatusServiceTests {
   }
 
   @Test
-  public void testCheckResponseForUnmonitoredTime() {
+  public void testCheckResponseForUnmonitoredTime() throws ApiValidationException {
     Calendar currentDateTime = Calendar.getInstance();
     parametersMonitoringUrl = DataUtils.initValidParametersWithDateMonitoring("url",
         new TimeData(currentDateTime.get(Calendar.HOUR_OF_DAY),
@@ -164,7 +165,7 @@ public class ValidationStatusServiceTests {
   }
 
   @Test
-  public void testCheckResponseForMonitorTime() {
+  public void testCheckResponseForMonitorTime() throws ApiValidationException {
     Calendar currentDateTime = Calendar.getInstance();
     parametersMonitoringUrl = DataUtils.initValidParametersWithDateMonitoring(serverUrl +
             EXIST_URL,
