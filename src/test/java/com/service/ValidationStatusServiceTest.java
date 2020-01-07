@@ -3,15 +3,15 @@ package com.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.common.DataUtils;
-import com.common.TestServer;
 import com.common.StatusInfo;
+import com.common.TestServer;
 import com.common.TimeData;
 import com.common.entities.ParametersMonitoringUrl;
 import com.common.entities.StatusUrl;
 import com.common.exceptions.ApiValidationException;
 import com.dao.StatusUrlRepository;
 import java.io.ByteArrayInputStream;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import org.apache.http.HttpResponse;
 import org.apache.http.entity.BasicHttpEntity;
@@ -177,9 +177,14 @@ public class ValidationStatusServiceTest {
         .thenReturn(parametersMonitoringUrl);
     StatusUrl statusUrl = new StatusUrl(parametersMonitoringUrl);
     statusUrl.setStatus(STATUS_OK);
+    /*
     Calendar dateTimeWritingDefineStatus = Calendar.getInstance();
     dateTimeWritingDefineStatus.set(Calendar.MINUTE, currentDateTime.get(Calendar.MINUTE) + 1);
-    statusUrl.setDefiningStatusTime(new Timestamp(dateTimeWritingDefineStatus.getTimeInMillis()));
+    */
+    LocalDateTime dateTimeWritingDefineStatus = LocalDateTime.now();
+    dateTimeWritingDefineStatus = dateTimeWritingDefineStatus.plusMinutes(1);
+    // statusUrl.setDefiningStatusTime(new Timestamp(dateTimeWritingDefineStatus.getTimeInMillis()));
+    statusUrl.setDefiningStatusTime(dateTimeWritingDefineStatus);
     Mockito.when(statusUrlRepository.saveAndFlush(statusUrl)).thenReturn(statusUrl);
     StatusInfo statusInfo = validationStatusService.checkResponse(102);
     assertThat(statusInfo.getStatus()).isEqualTo("OK");

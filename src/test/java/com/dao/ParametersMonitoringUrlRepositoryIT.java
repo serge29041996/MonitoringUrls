@@ -6,6 +6,8 @@ import com.common.PeriodMonitoring;
 import com.common.SizeResponseData;
 import com.common.TimeResponseData;
 import com.common.entities.ParametersMonitoringUrl;
+import java.time.LocalTime;
+import javax.xml.crypto.Data;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,8 +33,12 @@ public class ParametersMonitoringUrlRepositoryIT {
 
   @Test
   public void testFindById() {
+    /*
     Date beginTime = DataUtils.getFormattedISOTime(12, 0, 0);
     Date endTime = DataUtils.getFormattedISOTime(23, 59, 59);
+    */
+    LocalTime beginTime = DataUtils.getFormattedISOTime(12, 0, 0);
+    LocalTime endTime = DataUtils.getFormattedISOTime(23, 59, 59);
     ParametersMonitoringUrl parametersMonitoringUrl = new ParametersMonitoringUrl("someUrl",
         new PeriodMonitoring(beginTime,
             endTime),
@@ -47,8 +53,12 @@ public class ParametersMonitoringUrlRepositoryIT {
 
   @Test
   public void testFindByUrl() {
+    /*
     Date beginTime = DataUtils.getFormattedISOTime(12, 0, 0);
     Date endTime = DataUtils.getFormattedISOTime(23, 59, 59);
+    */
+    LocalTime beginTime = DataUtils.getFormattedISOTime(12, 0, 0);
+    LocalTime endTime = DataUtils.getFormattedISOTime(23, 59, 59);
     ParametersMonitoringUrl parametersMonitoringUrl = new ParametersMonitoringUrl(TEST_URL,
         new PeriodMonitoring(beginTime,
             endTime),
@@ -62,8 +72,12 @@ public class ParametersMonitoringUrlRepositoryIT {
 
   @Test
   public void testDeleteEntity() {
+    /*
     Date beginTime = DataUtils.getFormattedISOTime(12, 0, 0);
     Date endTime = DataUtils.getFormattedISOTime(23, 59, 59);
+    */
+    LocalTime beginTime = DataUtils.getFormattedISOTime(12, 0, 0);
+    LocalTime endTime = DataUtils.getFormattedISOTime(23, 59, 59);
     ParametersMonitoringUrl parametersMonitoringUrl = new ParametersMonitoringUrl(TEST_URL,
         new PeriodMonitoring(beginTime,
             endTime),
@@ -78,15 +92,20 @@ public class ParametersMonitoringUrlRepositoryIT {
 
   @Test
   public void testUpdateEntity() {
+    /*
     Date beginTime = DataUtils.getFormattedISOTime(12, 0, 0);
     Date endTime = DataUtils.getFormattedISOTime(23, 59, 59);
+    */
+    LocalTime beginTime = DataUtils.getFormattedISOTime(12, 0, 0);
+    LocalTime endTime = DataUtils.getFormattedISOTime(23, 59, 59);
     ParametersMonitoringUrl parametersMonitoringUrl = new ParametersMonitoringUrl(TEST_URL,
         new PeriodMonitoring(beginTime,
             endTime),
         new TimeResponseData(1, 2, 3)
         , 200, new SizeResponseData(1, 1000), "test");
     parametersMonitoringUrl = parametersMonitoringUrlRepository.save(parametersMonitoringUrl);
-    Date newEndTime = DataUtils.getFormattedISOTime(23,0,0);
+    // Date newEndTime = DataUtils.getFormattedISOTime(23,0,0);
+    LocalTime newEndTime = DataUtils.getFormattedISOTime(23,0,0);
     parametersMonitoringUrl.setEndTimeMonitoring(newEndTime);
     parametersMonitoringUrlRepository.save(parametersMonitoringUrl);
     ParametersMonitoringUrl findByIdParams = parametersMonitoringUrlRepository
@@ -98,8 +117,12 @@ public class ParametersMonitoringUrlRepositoryIT {
 
   @Test
   public void testCountEntity() {
+    /*
     Date beginTime = DataUtils.getFormattedISOTime(12, 0, 0);
     Date endTime = DataUtils.getFormattedISOTime(23, 59, 59);
+    */
+    LocalTime beginTime = DataUtils.getFormattedISOTime(12, 0, 0);
+    LocalTime endTime = DataUtils.getFormattedISOTime(23, 59, 59);
     ParametersMonitoringUrl parametersMonitoringUrl = new ParametersMonitoringUrl(TEST_URL,
         new PeriodMonitoring(beginTime,
             endTime),

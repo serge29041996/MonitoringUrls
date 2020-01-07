@@ -9,8 +9,8 @@ import com.common.SizeResponseData;
 import com.common.TimeResponseData;
 import com.common.entities.ParametersMonitoringUrl;
 import com.common.entities.StatusUrl;
+import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,8 +36,12 @@ public class StatusUrlRepositoryIT {
 
   @Test
   public void testSaveStatusUrl() {
+    /*
     Date beginTime = DataUtils.getFormattedISOTime(12, 0, 0);
     Date endTime = DataUtils.getFormattedISOTime(23, 59, 59);
+    */
+    LocalTime beginTime = DataUtils.getFormattedISOTime(12, 0, 0);
+    LocalTime endTime = DataUtils.getFormattedISOTime(23, 59, 59);
     ParametersMonitoringUrl parametersMonitoringUrl = new ParametersMonitoringUrl(TEST_URL,
         new PeriodMonitoring(beginTime,
             endTime),
@@ -55,8 +59,12 @@ public class StatusUrlRepositoryIT {
 
   @Test
   public void testGetLastStatusUrl() {
+    /*
     Date beginTime = DataUtils.getFormattedISOTime(12, 0, 0);
     Date endTime = DataUtils.getFormattedISOTime(23, 59, 59);
+    */
+    LocalTime beginTime = DataUtils.getFormattedISOTime(12, 0, 0);
+    LocalTime endTime = DataUtils.getFormattedISOTime(23, 59, 59);
     ParametersMonitoringUrl parametersMonitoringUrl = new ParametersMonitoringUrl(TEST_URL,
         new PeriodMonitoring(beginTime,
             endTime),
@@ -71,8 +79,12 @@ public class StatusUrlRepositoryIT {
 
   @Test
   public void testCascadeDeleting() {
+    /*
     Date beginTime = DataUtils.getFormattedISOTime(12, 0, 0);
     Date endTime = DataUtils.getFormattedISOTime(23, 59, 59);
+    */
+    LocalTime beginTime = DataUtils.getFormattedISOTime(12, 0, 0);
+    LocalTime endTime = DataUtils.getFormattedISOTime(23, 59, 59);
     ParametersMonitoringUrl parametersMonitoringUrl = new ParametersMonitoringUrl(TEST_URL,
         new PeriodMonitoring(beginTime,
             endTime),

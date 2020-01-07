@@ -1,9 +1,8 @@
 package com.common;
 
 import com.common.entities.ParametersMonitoringUrl;
-import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 /**
  * Util class for formatted data
@@ -12,6 +11,7 @@ public class DataUtils {
   private DataUtils() {
   }
 
+  /*
   private static void initializeTime(Calendar calendarTime, int hour, int minute, int second) {
     calendarTime.set(Calendar.HOUR_OF_DAY, hour);
     calendarTime.set(Calendar.MINUTE, minute);
@@ -24,7 +24,13 @@ public class DataUtils {
     initializeTime(calendarTime, hour, minute, second);
     return calendarTime.getTime();
   }
+  */
 
+  public static LocalTime getFormattedISOTime(int hour, int minute, int seconds) {
+    return LocalTime.of(hour, minute, seconds);
+  }
+
+  /*
   public static Timestamp getFormattedISODateTime(int year, int month, int day, int hour,
                                                   int minute, int second) {
     Calendar calendarDateTime = Calendar.getInstance();
@@ -34,6 +40,12 @@ public class DataUtils {
     calendarDateTime.set(Calendar.DAY_OF_MONTH, day);
     initializeTime(calendarDateTime, hour, minute, second);
     return new Timestamp(calendarDateTime.getTimeInMillis());
+  }
+  */
+
+  public static LocalDateTime getFormattedISODateTime(int year, int month, int day, int hour,
+                                                      int minute, int second) {
+    return LocalDateTime.of(year, month, day, hour, minute, second);
   }
 
   public static ParametersMonitoringUrl initParametersMonitoring(String url,
@@ -48,9 +60,15 @@ public class DataUtils {
 
   public static ParametersMonitoringUrl initValidParametersWithDateMonitoring(
       String url, TimeData beginTimeMonitor, TimeData endTimeMonitor) {
+    /*
     Date beginTime = DataUtils.getFormattedISOTime(beginTimeMonitor.getHour(),
         beginTimeMonitor.getMinute(), beginTimeMonitor.getSecond());
     Date endTime = DataUtils.getFormattedISOTime(endTimeMonitor.getHour(),
+        endTimeMonitor.getMinute(), endTimeMonitor.getSecond());
+        */
+    LocalTime beginTime = DataUtils.getFormattedISOTime(beginTimeMonitor.getHour(),
+        beginTimeMonitor.getMinute(), beginTimeMonitor.getSecond());
+    LocalTime endTime = DataUtils.getFormattedISOTime(endTimeMonitor.getHour(),
         endTimeMonitor.getMinute(), endTimeMonitor.getSecond());
     return new ParametersMonitoringUrl(url, new PeriodMonitoring(beginTime, endTime),
         new TimeResponseData(1,2,3),

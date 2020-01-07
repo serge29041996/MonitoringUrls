@@ -19,6 +19,7 @@ import com.common.entities.ParametersMonitoringUrl;
 import com.controller.exceptions.handler.ApiExceptionData;
 import com.controller.exceptions.handler.ApiValidationExceptionData;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.service.IParametersMonitoringUrlService;
 import java.util.List;
 import org.junit.Before;
@@ -322,7 +323,7 @@ public class ParametersMonitoringUrlControllerIT {
 
   private String asJsonString(final Object obj) {
     try {
-      final ObjectMapper mapper = new ObjectMapper();
+      final ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
       return mapper.writeValueAsString(obj);
     } catch (Exception e) {
       throw new RuntimeException(e);
@@ -331,7 +332,7 @@ public class ParametersMonitoringUrlControllerIT {
 
   private ApiExceptionData asJavaObjectApiException(final String JSONResponse){
     try {
-      final ObjectMapper mapper = new ObjectMapper();
+      final ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
       return mapper.readValue(JSONResponse,ApiExceptionData.class);
     } catch (Exception e) {
       throw new RuntimeException(e);
