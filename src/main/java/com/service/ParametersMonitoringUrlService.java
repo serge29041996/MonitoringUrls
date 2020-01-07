@@ -17,12 +17,11 @@ import com.common.exceptions.InvalidSizeResponseException;
 import com.common.exceptions.InvalidTimeResponseException;
 import com.common.exceptions.NotFoundParametersUrlException;
 import com.dao.ParametersMonitoringUrlRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.Date;
+import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Class for managing with url and its parameters for defining url.
@@ -231,14 +230,28 @@ public class ParametersMonitoringUrlService implements IParametersMonitoringUrlS
    */
   private static void compareTimes(ParametersMonitoringUrl parametersUrl)
       throws CompareTimesException, EqualTimesException {
+    /*
     Date beginTime = parametersUrl.getBeginTimeMonitoring();
     Date endTime = parametersUrl.getEndTimeMonitoring();
+    */
+    LocalTime beginTime = parametersUrl.getBeginTimeMonitoring();
+    LocalTime endTime = parametersUrl.getEndTimeMonitoring();
 
+    /*
     if (endTime.getTime() < beginTime.getTime()) {
       throw new CompareTimesException("Begin time is bigger than end time");
     }
 
     if (endTime.getTime() == beginTime.getTime()) {
+      throw new EqualTimesException("Begin and end time are equal");
+    }
+    */
+
+    if (beginTime.compareTo(endTime) > 0) {
+      throw new CompareTimesException("Begin time is bigger than end time");
+    }
+
+    if (beginTime.compareTo(endTime) == 0) {
       throw new EqualTimesException("Begin and end time are equal");
     }
   }

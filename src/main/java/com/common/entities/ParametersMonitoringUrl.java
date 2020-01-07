@@ -11,25 +11,24 @@ import com.common.PeriodMonitoring;
 import com.common.SizeResponseData;
 import com.common.TimeResponseData;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 /**
  * Entity for managing information about url and parameters for checking its status in.
@@ -55,18 +54,30 @@ public class ParametersMonitoringUrl {
   private String url;
 
   /** Begin time of monitoring url. */
+  /*
   @NotNull
   @Column(name = "begintimemonitoring")
   @Temporal(TemporalType.TIME)
   @ApiModelProperty(notes = "Begin time for monitoring url")
   private Date beginTimeMonitoring;
+  */
+  @NotNull
+  @ApiModelProperty(notes = "Begin time for monitoring url")
+  @Column(name = "begintimemonitoring", columnDefinition = "TIME")
+  private LocalTime beginTimeMonitoring;
 
   /** End time of monitoring url. */
+  /*
   @NotNull
   @Column(name = "endtimemonitoring")
   @Temporal(TemporalType.TIME)
   @ApiModelProperty(notes = "End time for monitoring url")
   private Date endTimeMonitoring;
+  */
+  @NotNull
+  @ApiModelProperty(notes = "End time for monitoring url")
+  @Column(name = "endtimemonitoring", columnDefinition = "TIME")
+  private LocalTime endTimeMonitoring;
 
   /** Max border of number seconds for status ok. */
   @Positive(message = "Time for the response to ok should be greater than 0")
@@ -125,8 +136,12 @@ public class ParametersMonitoringUrl {
                                  TimeResponseData timeResponseData, int expectedCodeResponse,
                                  SizeResponseData sizeResponseData) {
     this.url = url;
+    /*
     this.beginTimeMonitoring = new Date(periodMonitoring.getBeginTime().getTime());
     this.endTimeMonitoring = new Date(periodMonitoring.getEndTime().getTime());
+    */
+    this.beginTimeMonitoring = periodMonitoring.getBeginTime();
+    this.endTimeMonitoring = periodMonitoring.getEndTime();
     this.timeResponseOk = timeResponseData.getTimeResponseOk();
     this.timeResponseWarning = timeResponseData.getTimeResponseWarning();
     this.timeResponseCritical = timeResponseData.getTimeResponseCritical();
@@ -175,31 +190,50 @@ public class ParametersMonitoringUrl {
    * Get begin time for monitoring.
    * @return begin time for monitoring
    */
+  /*
   public Date getBeginTimeMonitoring() {
     return new Date(this.beginTimeMonitoring.getTime());
+  }*/
+  public LocalTime getBeginTimeMonitoring() {
+    return beginTimeMonitoring;
   }
 
   /**
    * Set begin time for monitoring.
    * @param beginTimeMonitoring new value of begin time for monitoring
    */
+  /*
   public void setBeginTimeMonitoring(Date beginTimeMonitoring) {
     this.beginTimeMonitoring = new Date(beginTimeMonitoring.getTime());
+  }
+  */
+  public void setBeginTimeMonitoring(LocalTime beginTimeMonitoring) {
+    this.beginTimeMonitoring = beginTimeMonitoring;
   }
 
   /**
    * Get end time for monitoring.
    * @return end time for monitoring
    */
+  /*
   public Date getEndTimeMonitoring() {
     return new Date(this.endTimeMonitoring.getTime());
+  }
+  */
+  public LocalTime getEndTimeMonitoring() {
+    return endTimeMonitoring;
   }
 
   /**
    * Set end time for monitoring.
    * @param endTimeMonitoring new value of end time for monitoring
    */
+  /*
   public void setEndTimeMonitoring(Date endTimeMonitoring) {
     this.endTimeMonitoring = new Date(endTimeMonitoring.getTime());
+  }
+  */
+  public void setEndTimeMonitoring(LocalTime endTimeMonitoring) {
+    this.endTimeMonitoring = endTimeMonitoring;
   }
 }

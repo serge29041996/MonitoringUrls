@@ -7,13 +7,8 @@
 package com.common.entities;
 
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -23,10 +18,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 /**
  * Entity for saving status and time defining of status for url.
@@ -44,10 +44,15 @@ public class StatusUrl {
   private long id;
 
   /** Time of defining status for url. */
+  /*
   @Column(name = "definingstatustime")
   @Temporal(TemporalType.TIMESTAMP)
   @ApiModelProperty(notes = "Date and time when status is determined")
   private Date definingStatusTime;
+  */
+  @Column(name = "definingstatustime", columnDefinition = "TIMESTAMP")
+  @ApiModelProperty(notes = "Date and time when status is determined")
+  private LocalDateTime definingStatusTime;
 
   /** Status of url. */
   @NotBlank(message = "Status of url should not be empty")
@@ -81,15 +86,25 @@ public class StatusUrl {
    * Get time of defining status.
    * @return time of defining status
    */
+  /*
   public Date getDefiningStatusTime() {
     return new Date(this.definingStatusTime.getTime());
+  }
+  */
+  public LocalDateTime getDefiningStatusTime() {
+    return definingStatusTime;
   }
 
   /**
    * Set time of defining status.
    * @param timeDefiningStatus new value time of defining status
    */
+  /*
   public void setDefiningStatusTime(Date timeDefiningStatus) {
     this.definingStatusTime = new Date(timeDefiningStatus.getTime());
+  }
+  */
+  public void setDefiningStatusTime(LocalDateTime timeDefiningStatus) {
+    this.definingStatusTime = timeDefiningStatus;
   }
 }

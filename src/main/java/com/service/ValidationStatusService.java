@@ -15,6 +15,9 @@ import com.service.checkstatushandler.AbstractStatusHandler;
 import com.service.checkstatushandler.ExpectedCodeResponseHandler;
 import com.service.checkstatushandler.ResponseSizeHandler;
 import com.service.checkstatushandler.StringInResponseHandler;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.config.RequestConfig;
@@ -24,10 +27,6 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.io.IOException;
-import java.sql.Timestamp;
-import java.util.Calendar;
 
 /**
  * Class for validation status of url.
@@ -71,6 +70,8 @@ public class ValidationStatusService implements IValidationStatusService {
    */
   @Override
   public boolean checkTimeMonitoring(StatusUrl statusUrl) {
+    LocalTime currentTime = LocalTime.now();
+    /*
     Calendar currentDateTime = Calendar.getInstance();
     Calendar currentTime = Calendar.getInstance();
     currentTime.clear();
@@ -81,6 +82,15 @@ public class ValidationStatusService implements IValidationStatusService {
     if (currentTimeInMilliseconds >= statusUrl.getParametersMonitoringUrl()
         .getBeginTimeMonitoring().getTime() && currentTimeInMilliseconds <= statusUrl
         .getParametersMonitoringUrl().getEndTimeMonitoring().getTime()) {
+      return true;
+    } else {
+      statusUrl.setStatus(STATUS_UNMONITORED);
+      return false;
+    }
+    */
+    if (currentTime.compareTo(statusUrl.getParametersMonitoringUrl().getBeginTimeMonitoring()) >= 0
+        && currentTime.compareTo(statusUrl.getParametersMonitoringUrl()
+        .getEndTimeMonitoring()) <= 0) {
       return true;
     } else {
       statusUrl.setStatus(STATUS_UNMONITORED);
@@ -176,7 +186,7 @@ public class ValidationStatusService implements IValidationStatusService {
       if (!statusUrl.getStatus().equals(STATUS_CRITICAL)) {
         statusHandler.check(httpResponse, statusUrl, statusInfo);
       }
-      statusUrl.setDefiningStatusTime(new Timestamp(Calendar.getInstance().getTimeInMillis()));
+      statusUrl.setDefiningStatusTime(LocalDateTime.now());
       statusUrlRepository.saveAndFlush(statusUrl);
     } else {
       statusInfo.setCauseStatus("Url should not monitor now");

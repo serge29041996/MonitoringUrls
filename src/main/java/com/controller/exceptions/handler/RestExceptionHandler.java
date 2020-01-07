@@ -19,6 +19,7 @@ import com.common.exceptions.InvalidExpectedCodeResponseException;
 import com.common.exceptions.InvalidSizeResponseException;
 import com.common.exceptions.InvalidTimeResponseException;
 import com.common.exceptions.NotFoundParametersUrlException;
+import lombok.extern.log4j.Log4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
@@ -37,6 +38,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
  */
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
+@Log4j
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
   /**
@@ -72,6 +74,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                                                                 HttpHeaders headers,
                                                                 HttpStatus status,
                                                                 WebRequest request) {
+    log.error("Exception with JSON:", ex);
     String error = "Malformed JSON request";
     return buildResponseEntity(new ApiExceptionData(BAD_REQUEST, error, ex));
   }
